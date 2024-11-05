@@ -16,6 +16,7 @@ class DCF_Elementor {
 		add_action( 'elementor/frontend/after_register_scripts', array( $this, 'register_frontend_scripts' ), 9999 );
 		add_action( 'elementor/frontend/after_register_styles', array( $this, 'register_frontend_styles' ) );
 		add_action( 'elementor/widgets/register', array( $this, 'on_widgets_registered' ) );
+		add_filter( 'frymo/query/', array( $this, 'add_date_range_to_query_args' ) );
 	}
 
 	public function init() {
@@ -154,6 +155,12 @@ class DCF_Elementor {
 	*/
 	public function register_frontend_styles() {
 		wp_register_style( 'dcf-dates-range-form', DCF_PLUGIN_DIR_URL . 'inc/elementor/assets/dates-range-form.css', array(), DCF_PLUGIN_VERSION );  
+	}
+
+	public function add_date_range_to_query_args( $args ) {
+		error_log( "add_date_range_to_query_args args\n" . print_r( $args, true ) . "\n" );
+
+		return $args;
 	}
 }
 new DCF_Elementor();
