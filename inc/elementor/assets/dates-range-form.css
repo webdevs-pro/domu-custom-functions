@@ -39,3 +39,8 @@
    padding: 12px 40px;
    border: none;
 }
+
+.domu-flatpikr-wrapper .flatpickr-current-month {
+   display: flex;
+   justify-content: space-between;
+}
