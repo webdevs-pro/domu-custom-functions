@@ -12,6 +12,11 @@ jQuery(window).on('elementor/frontend/init', function () {
 					altInput: true,
 					altFormat: "d.m.Y",
 					minDate: "today",
+					allowInput: true,
+					onReady: function(selectedDates, dateStr, instance) {
+						 // Add a custom class to the Flatpickr wrapper
+						 $(instance.calendarContainer).addClass('domu-flatpikr-wrapper');
+					},
 					onChange: function(selectedDates, dateStr, instance) {
 						// Calculate the date three months after the selected move-in date
 						if (selectedDates.length > 0) {
@@ -24,7 +29,12 @@ jQuery(window).on('elementor/frontend/init', function () {
 										dateFormat: "Y-m-d",
 										altInput: true,
 										altFormat: "d.m.Y",
-										minDate: minMoveOutDate
+										minDate: minMoveOutDate,
+										allowInput: true,
+										onReady: function(selectedDates, dateStr, instance) {
+											 // Add a custom class to the Flatpickr wrapper
+											 $(instance.calendarContainer).addClass('domu-flatpikr-wrapper');
+										},
 									});
 							}
 						}
@@ -38,7 +48,12 @@ jQuery(window).on('elementor/frontend/init', function () {
 					dateFormat: "Y-m-d",
 					altInput: true,
 					altFormat: "d.m.Y",
-					minDate: "today"
+					minDate: "today",
+					allowInput: true,
+					onReady: function(selectedDates, dateStr, instance) {
+						 // Add a custom class to the Flatpickr wrapper
+						 $(instance.calendarContainer).addClass('domu-flatpikr-wrapper');
+					},
 			});
 		}
 
