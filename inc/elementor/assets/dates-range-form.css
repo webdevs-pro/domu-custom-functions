@@ -1,0 +1,41 @@
+.elementor-widget-dcf-dates-range-form form {
+   display: flex;
+   gap: 15px;
+   align-items: flex-end;
+}
+.elementor-widget-dcf-dates-range-form form label {
+   display: flex;
+   flex-direction: column;
+   gap: 5px;
+   flex-grow: 1;
+   font-family: "Mark Book", Sans-serif;
+   font-size: 12px;
+   font-weight: 400;
+   color: #A2A1A1;
+}
+
+.elementor-widget-dcf-dates-range-form form .dcf-date-input {
+   border-width: 0px;
+   border-bottom: 1px solid #16151433;
+   padding: 5px 10px;
+   border-radius: 0;
+}
+.elementor-widget-dcf-dates-range-form form .dcf-date-input:focus {
+   border-bottom-color: #161514;
+}
+.elementor-widget-dcf-dates-range-form form .dcf-date-input:focus-visible {
+   outline: none;
+   box-shadow: unset;
+}
+
+.elementor-widget-dcf-dates-range-form form input[type="submit"] {
+   font-family: "Trio Grotesk", Sans-serif;
+   font-size: 10px;
+   font-weight: 500;
+   text-transform: uppercase;
+   border-radius: 8px 8px 8px 8px;
+   background-color: #161514;
+   color: #ffffff;
+   padding: 12px 40px;
+   border: none;
+}

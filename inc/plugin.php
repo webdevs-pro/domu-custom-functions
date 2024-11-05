@@ -1,6 +1,11 @@
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+
+require_once ( DCF_PLUGIN_DIR . '/inc/elementor/elementor.php' );
 
 // Register the script and style globally
 add_action( 'elementor/frontend/after_register_scripts', 'dcf_register_assets' ); // Register the assets during the enqueue stage
