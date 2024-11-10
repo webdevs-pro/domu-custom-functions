@@ -157,42 +157,72 @@ class DCF_Elementor {
 		wp_register_style( 'dcf-dates-range-form', DCF_PLUGIN_DIR_URL . 'inc/elementor/assets/dates-range-form.css', array(), DCF_PLUGIN_VERSION );  
 	}
 
+
+
+
+
 	// public function add_date_range_to_query_args( $args, $frymo_query, $settings ) {
-	// 	// error_log( "add_date_range_to_query_args args\n" . print_r( $args, true ) . "\n" );
-	// 	// error_log( "add_date_range_to_query_args frymo_query\n" . print_r( $frymo_query, true ) . "\n" );
-	// 	// error_log( "add_date_range_to_query_args settings\n" . print_r( $settings, true ) . "\n" );
-
-
 	// 	if ( is_array( $frymo_query ) && ! empty( $frymo_query ) && isset( $settings['query_id'] ) && isset( $frymo_query[ $settings['query_id'] ] ) ) {
 	// 		// Page load
 	// 		$check_in_date  = $frymo_query[ $settings['query_id'] ]->udfm_einzugsdatum ?? '';
 	// 		$check_out_date = $frymo_query[ $settings['query_id'] ]->udfm_auszugsdatum ?? '';
 
-
 	// 	} else if ( isset( $_POST['action'] ) && $_POST['action'] == 'frymo_render_listing_widget' ) {
 	// 		// AJAX call
 	// 		$check_in_date  = $_POST['settings']['udfm_einzugsdatum'] ?? '';
-	// 		$check_out_date  = $_POST['settings']['udfm_auszugsdatum'] ?? '';
+	// 		$check_out_date = $_POST['settings']['udfm_auszugsdatum'] ?? '';
 	// 	}
 
-	// 	// error_log( "check_in_date\n" . print_r( $check_in_date, true ) . "\n" );
-	// 	// error_log( "check_out_date\n" . print_r( $check_out_date, true ) . "\n" );
-
-	// 	// einzugsdatum - post meta field name for start of ocupation date
-	// 	// auszugsdatum - post meta field name for end of ocupation date
-
-	// 	if ( $check_in_date ) {
-	// 		unset ( $args['meta_query']['udfm_einzugsdatum'] );
+	// 	// Ensure the check-in date is provided
+	// 	if ( ! isset( $check_in_date ) || ! $check_in_date  ) {
+	// 		return $args; // No check-in date, return original args
 	// 	}
 
-	// 	if ( $check_out_date ) {
-	// 		unset ( $args['meta_query']['check_out_date'] );
+	// 	// Plus 3 months by default
+	// 	if ( ! isset( $check_out_date ) || ! $check_out_date  ) {
+	// 		try {
+	// 			$check_in_datetime = new DateTime( $check_in_date );
+	// 			$check_in_datetime->modify('+2 months'); // Add 3 months
+	// 			$check_in_datetime->modify('last day of this month'); // Set to last day of the month
+	// 			$check_out_date = $check_in_datetime->format('Y-m-d'); // Format as needed
+	// 		} catch (Exception $e) {
+	// 			// Handle invalid date format if needed
+	// 			return $args;
+	// 		}
 	// 	}
 
-	// 	// Date query goes here
 
 
-	// 	error_log( "args\n" . print_r( $args, true ) . "\n" );
+	// 	error_log( "check_in_date\n" . print_r( $check_in_date, true ) . "\n" );
+	// 	error_log( "check_out_date\n" . print_r( $check_out_date, true ) . "\n" );
+
+	// 	// Initialize meta query if not already set
+	// 	$args['meta_query'] = $args['meta_query'] ?? [];
+
+	// 	// Remove any existing date conditions
+	// 	unset( $args['meta_query']['udfm_einzugsdatum'], $args['meta_query']['check_out_date'] );
+
+
+	// 	if ( $check_in_date && $check_out_date ) {
+	// 		$args['meta_query'][] = [
+	// 			'relation' => 'AND',
+	// 			[
+	// 					'key' => 'einzugsdatum', // Date property will be occupied
+	// 					'value' => $check_in_date,
+	// 					'compare' => '>',
+	// 					'type' => 'DATE'
+	// 			],
+	// 			[
+	// 					'key' => 'auszugsdatum', // Date property will be free
+	// 					'value' => $check_out_date,
+	// 					'compare' => '<=',
+	// 					'type' => 'DATE'
+	// 			]
+	// 		];
+	// 	}
+
+	// 	// Uncomment for debugging
+	// 	// error_log( "args\n" . print_r( $args, true ) . "\n" );
 
 	// 	return $args;
 	// }
@@ -213,59 +243,93 @@ class DCF_Elementor {
 		}
 
 		// Ensure the check-in date is provided
-		if ( ! $check_in_date ) {
+		if ( ! isset( $check_in_date ) || ! $check_in_date  ) {
 			return $args; // No check-in date, return original args
 		}
+
+		// Plus 3 months by default
+		if ( ! isset( $check_out_date ) || ! $check_out_date  ) {
+			try {
+				$check_in_datetime = new DateTime( $check_in_date );
+				$check_in_datetime->modify('+2 months'); // Add 3 months
+				$check_in_datetime->modify('last day of this month'); // Set to last day of the month
+				$check_out_date = $check_in_datetime->format('Y-m-d'); // Format as needed
+			} catch (Exception $e) {
+				// Handle invalid date format if needed
+				return $args;
+			}
+		}
+
+
+
+		error_log( "check_in_date\n" . print_r( $check_in_date, true ) . "\n" );
+		error_log( "check_out_date\n" . print_r( $check_out_date, true ) . "\n" );
 
 		// Initialize meta query if not already set
 		$args['meta_query'] = $args['meta_query'] ?? [];
 
 		// Remove any existing date conditions
-		unset( $args['meta_query']['udfm_einzugsdatum'], $args['meta_query']['check_out_date'] );
+		unset( $args['meta_query']['udfm_einzugsdatum'], $args['meta_query']['udfm_auszugsdatum'] );
 
-		// Case 1: Only check-in date is provided
-		if ( $check_in_date && ! $check_out_date ) {
-			$args['meta_query'][] = [
-				'relation' => 'OR',
-				[
-						'key' => 'einzugsdatum', // Date property will be occupied
-						'value' => $check_in_date,
-						'compare' => '>',
-						'type' => 'DATE'
-				],
-				[
-						'key' => 'auszugsdatum', // Date property will be free
-						'value' => $check_in_date,
-						'compare' => '<=',
-						'type' => 'DATE'
-				]
-			];
+
+		$args_1 = array(
+			'post_type'      => FRYMO_POST_TYPE,
+			'posts_per_page' => -1,
+			'post_status'    => 'publish',
+			'fields'         => 'ids',
+		);
+
+		$query_1 = new WP_Query( $args_1 );
+		// error_log( "query_1\n" . print_r( $query_1, true ) . "\n" );
+
+		$all_posts = array();
+		foreach ( $query_1->posts as $post_id ) {
+			$all_posts[ $post_id ] = array(
+				'check_in_date' => get_post_meta( $post_id, 'einzugsdatum', true ) ?? '',
+				'check_out_date' => get_post_meta( $post_id, 'auszugsdatum', true ) ?? '',
+			);
 		}
 
-		// Case 2: Both check-in and check-out dates are provided
-		elseif ( $check_in_date && $check_out_date ) {
-			$args['meta_query'][] = [
-				'relation' => 'OR',
-				[
-						'key' => 'einzugsdatum',
-						'value' => $check_out_date,
-						'compare' => '>',
-						'type' => 'DATE'
-				],
-				[
-						'key' => 'auszugsdatum',
-						'value' => $check_in_date,
-						'compare' => '<=',
-						'type' => 'DATE'
-				]
-			];
-		}
+		// error_log( "all_posts\n" . print_r( $all_posts, true ) . "\n" );
+
+
+		$filter = array_filter( $all_posts, function( $dates ) use ( $check_in_date, $check_out_date ) {
+			// Include properties with no check-in and check-out dates
+			if ( empty( $dates['check_in_date'] ) && empty( $dates['check_out_date'] ) ) {
+				return true;
+			}
+			// Include if check-in date is greater than check-out date and after requested check_out_date
+			if ( ! empty( $dates['check_in_date'] ) && ! empty( $dates['check_out_date'] ) 
+				&& strtotime( $dates['check_in_date'] ) > strtotime( $dates['check_out_date'] )
+				&& strtotime( $dates['check_in_date'] ) > strtotime( $check_out_date ) ) {
+				return true;
+			}
+			// Include if check-out date is before requested $check_in_date
+			if ( ! empty( $dates['check_out_date'] ) && strtotime( $dates['check_out_date'] ) < strtotime( $check_in_date ) ) {
+				return true;
+			}
+			// Include if check-in date is after requested $check_out_date
+			if ( ! empty( $dates['check_in_date'] ) && strtotime( $dates['check_in_date'] ) > strtotime( $check_out_date ) ) {
+				return true;
+			}
+			return false;
+		});
+
+
+
+
+		// Extract the IDs of the filtered posts
+		$filtered_post_ids = array_keys( $filter );
+
+		// Add 'post__in' to $args to only include filtered post IDs
+		$args['post__in'] = $filtered_post_ids;
+
 
 		// Uncomment for debugging
-		// error_log( "args\n" . print_r( $args, true ) . "\n" );
+		error_log( "args\n" . print_r( $args, true ) . "\n" );
 
 		return $args;
-}
+	}
   
 }
 new DCF_Elementor();
