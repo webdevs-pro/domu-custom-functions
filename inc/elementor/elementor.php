@@ -231,39 +231,46 @@ class DCF_Elementor {
 
 
 	public function add_date_range_to_query_args( $args, $frymo_query, $settings ) {
-		if ( is_array( $frymo_query ) && ! empty( $frymo_query ) && isset( $settings['query_id'] ) && isset( $frymo_query[ $settings['query_id'] ] ) ) {
-			// Page load
+		
+		if ( ( is_array( $frymo_query ) || is_object( $frymo_query ) )
+			&& ! empty( $frymo_query )
+			&& array_key_exists( $settings['query_id'], $frymo_query )
+			&& isset( $frymo_query[ $settings['query_id'] ] )
+		) {
+			// Page load.
 			$check_in_date  = $frymo_query[ $settings['query_id'] ]->udfm_einzugsdatum ?? '';
 			$check_out_date = $frymo_query[ $settings['query_id'] ]->udfm_auszugsdatum ?? '';
 
-		} else if ( isset( $_POST['action'] ) && $_POST['action'] == 'frymo_render_listing_widget' ) {
-			// AJAX call
+		} elseif ( isset( $_POST['action'] ) && 'frymo_render_listing_widget' === $_POST['action'] ) {
+			// AJAX call.
 			$check_in_date  = $_POST['settings']['udfm_einzugsdatum'] ?? '';
 			$check_out_date = $_POST['settings']['udfm_auszugsdatum'] ?? '';
 		}
 
+		// error_log( "check_in_date\n" . print_r( $check_in_date, true ) . "\n" );
+		// error_log( "check_out_date\n" . print_r( $check_out_date, true ) . "\n" );
+
+
 		// Ensure the check-in date is provided
-		if ( ! isset( $check_in_date ) || ! $check_in_date  ) {
+		if ( ! isset( $check_in_date ) || ! isset( $check_out_date ) ) {
 			return $args; // No check-in date, return original args
 		}
 
-		// Plus 3 months by default
-		if ( ! isset( $check_out_date ) || ! $check_out_date  ) {
-			try {
-				$check_in_datetime = new DateTime( $check_in_date );
-				$check_in_datetime->modify('+2 months'); // Add 3 months
-				$check_in_datetime->modify('last day of this month'); // Set to last day of the month
-				$check_out_date = $check_in_datetime->format('Y-m-d'); // Format as needed
-			} catch (Exception $e) {
-				// Handle invalid date format if needed
-				return $args;
-			}
-		}
+		// // Plus 3 months by default
+		// if ( ! isset( $check_out_date ) || ! $check_out_date  ) {
+		// 	try {
+		// 		$check_in_datetime = new DateTime( $check_in_date );
+		// 		$check_in_datetime->modify('+2 months'); // Add 3 months
+		// 		$check_in_datetime->modify('last day of this month'); // Set to last day of the month
+		// 		$check_out_date = $check_in_datetime->format('Y-m-d'); // Format as needed
+		// 	} catch (Exception $e) {
+		// 		// Handle invalid date format if needed
+		// 		return $args;
+		// 	}
+		// }
 
 
 
-		error_log( "check_in_date\n" . print_r( $check_in_date, true ) . "\n" );
-		error_log( "check_out_date\n" . print_r( $check_out_date, true ) . "\n" );
 
 		// Initialize meta query if not already set
 		$args['meta_query'] = $args['meta_query'] ?? [];
