@@ -131,8 +131,10 @@ class DCF_Elementor {
 	*/
 	public function on_widgets_registered() {
 		require ( DCF_PLUGIN_DIR . '/inc/elementor/widgets/dates-range-form.php' );
-
 		\Elementor\Plugin::instance()->widgets_manager->register( new DCF_Dates_Range_Form() );
+
+		require ( DCF_PLUGIN_DIR . '/inc/elementor/widgets/calculated-price.php' );
+		\Elementor\Plugin::instance()->widgets_manager->register( new DCF_Calculated_Price() );
 	}
 
 
@@ -155,6 +157,7 @@ class DCF_Elementor {
 	*/
 	public function register_frontend_styles() {
 		wp_register_style( 'dcf-dates-range-form', DCF_PLUGIN_DIR_URL . 'inc/elementor/assets/dates-range-form.css', array(), DCF_PLUGIN_VERSION );  
+		wp_register_style( 'dcf-calculated-price', DCF_PLUGIN_DIR_URL . 'inc/elementor/assets/calculated-price.css', array(), DCF_PLUGIN_VERSION );  
 	}
 
 

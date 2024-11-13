@@ -1,0 +1,15 @@
+.elementor-widget-dcf-calculated-price .calculated-price {
+   display: flex;
+   gap: 12px;
+   color: #161514;
+   font-size: 14px;
+   font-family: "Mark Book", Sans-serif;
+   line-height: 1.2em;
+}
+.elementor-widget-dcf-calculated-price .monthly-price {
+   font-weight: bold;
+}
+.elementor-widget-dcf-calculated-price .total-price {
+   border-left: 1px solid #292B294D;
+   padding-left: 12px;
+}

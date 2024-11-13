@@ -62,7 +62,6 @@ add_shortcode('domu_object_meta', 'dcf_render_object_meta');
 function dcf_render_object_meta() {
 
 	$post_id = get_the_ID();
-	$rooms   = get_post_meta( $post_id, 'anzahl_zimmer', true );
 	$area    = get_post_meta( $post_id, 'frymo_area_num', true );
 	$guests  = get_post_meta( $post_id, 'anzahl_der_gaste', true ) || 1;
 
@@ -73,31 +72,19 @@ function dcf_render_object_meta() {
 		$guests_text = 'Gäste'; // Plural form
 	}
 
-	$price = intval( get_post_meta( $post_id, 'frymo_price_num', true ) ) * 3;
-
 	ob_start();
 
 		// Initialize an empty array to store the meta information
 		$meta_info = array();
-		
-		// Check if rooms meta exists and add it to the array
-		if ( $rooms ) {
-			$meta_info[] = '<span>' . esc_html( $rooms ) . ' Zimmer</span>';
-		}
-		
-		// Check if area meta exists and add it to the array
-		if ( $area ) {
-			$meta_info[] = '<span>' . esc_html( $area ) . 'm²</span>';
-		}
 		
 		// Check if guests count exists and add it to the array
 		if ( $guests ) {
 			$meta_info[] = '<span>' . esc_html( $guests ) . ' ' . esc_html( $guests_text ) . '</span>';
 		}
 		
-		// Check if price meta exists and add it to the array
-		if ( $price && function_exists( 'frymo_format_number_de' ) ) {
-			$meta_info[] = '<span class="price">Ab ' . esc_html( frymo_format_number_de( $price ) ) . '€</span>';
+		// Check if area meta exists and add it to the array
+		if ( $area ) {
+			$meta_info[] = '<span>' . esc_html( $area ) . 'm²</span>';
 		}
 		
 		// Join the array elements with the separator and wrap in flexbox
