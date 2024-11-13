@@ -255,9 +255,10 @@ class DCF_Elementor {
 
 
 		// Ensure the check-in date is provided
-		if ( ! isset( $check_in_date ) || ! isset( $check_out_date ) ) {
+		if ( empty( $check_in_date ) || empty( $check_out_date ) ) {
 			return $args; // No check-in date, return original args
 		}
+
 
 		// // Plus 3 months by default
 		// if ( ! isset( $check_out_date ) || ! $check_out_date  ) {
