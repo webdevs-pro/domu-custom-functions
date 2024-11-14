@@ -17,6 +17,7 @@ class DCF_Elementor {
 		add_action( 'elementor/frontend/after_register_styles', array( $this, 'register_frontend_styles' ) );
 		add_action( 'elementor/widgets/register', array( $this, 'on_widgets_registered' ) );
 		add_filter( 'frymo/query/', array( $this, 'add_date_range_to_query_args' ), 10, 3 );
+		add_action( 'elementor/dynamic_tags/register', array( $this, 'register_dynamic_tags' ) );
 	}
 
 	public function init() {
@@ -345,6 +346,54 @@ class DCF_Elementor {
 		error_log( "args\n" . print_r( $args, true ) . "\n" );
 
 		return $args;
+	}
+
+
+
+	public function register_dynamic_tags( $dynamic_tags ) {
+
+		// Register the custom 'Domu' group
+		$dynamic_tags->register_group( 'domu_group', [
+			'title' => 'Domu'
+		] );
+
+		// Define the anonymous class for the custom dynamic tag
+		$dynamic_tags->register(new class extends \Elementor\Core\DynamicTags\Tag {
+
+			public function get_name() {
+					return 'custom_guest_count';
+			}
+
+			public function get_title() {
+					return 'Guest Count (Gast/Gäste)';
+			}
+
+			public function get_group() {
+					return 'domu_group';
+			}
+
+			public function get_categories() {
+					return [ \Elementor\Modules\DynamicTags\Module::TEXT_CATEGORY ];
+			}
+
+			protected function render() {
+					// Get the current post ID
+					$post_id = get_the_ID();
+
+					// Retrieve the 'anzahl_der_gaste' meta field value
+					$guests = get_post_meta( $post_id, 'anzahl_der_gaste', true );
+
+					// Default to 1 if no value is found
+					$guests = $guests ?: 1;
+
+					// Determine singular or plural for "Gast/Gäste"
+					$guests_text = ( $guests == 1 ) ? 'Gast' : 'Gäste';
+
+					// Output the formatted guest count with the correct label
+					echo esc_html( $guests . ' ' . $guests_text );
+			}
+
+		});
 	}
   
 }
