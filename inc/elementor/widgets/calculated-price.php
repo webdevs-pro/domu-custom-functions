@@ -4,10 +4,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-use Elementor\Controls_Manager as Controls_Manager;
-use Elementor\Group_Control_Typography as Group_Control_Typography;
-use Elementor\Modules\DynamicTags\Module as TagsModule;
-
 
 class DCF_Calculated_Price extends Elementor\Widget_Base {
 

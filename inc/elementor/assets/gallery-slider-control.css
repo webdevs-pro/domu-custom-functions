@@ -1,0 +1,23 @@
+.elementor-widget-dcf-gallery-slider-control .controls-wrapper {
+   display: flex;
+   gap: 12px;
+   align-items: center;
+}
+.elementor-widget-dcf-gallery-slider-control .prev-button,
+.elementor-widget-dcf-gallery-slider-control .next-button {
+   cursor: pointer;
+}
+.elementor-widget-dcf-gallery-slider-control .prev-button.disabled,
+.elementor-widget-dcf-gallery-slider-control .next-button.disabled {
+   pointer-events: none;
+   opacity: 0.4;
+}
+
+.elementor-widget-dcf-gallery-slider-control .next-button svg {
+   transform: rotate(180deg);
+}
+.elementor-widget-dcf-gallery-slider-control .fraction {
+   margin-left: 20px;
+   font-size: 14px;
+   font-family: "Mark Book", Sans-serif;
+}

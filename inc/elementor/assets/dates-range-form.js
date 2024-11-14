@@ -72,6 +72,43 @@ jQuery(window).on('elementor/frontend/init', function () {
 			});
 		}
 
+		// Remove all parameters from current query
+		var form = $scope.find('form');
+		var filterInitialSettings = JSON.parse($scope.attr('data-initial-settings'));
+		$(form).on('submit', function(e) {
+			e.preventDefault(); // Prevent default submit behavior initially
+
+			var current_url = window.location.href;
+			var frymo_query_raw = location.search.split('frymo_query=')[1];
+
+			if (typeof frymo_query_raw !== 'undefined') {
+				 var frymo_query = JSON.parse(decodeURIComponent(frymo_query_raw));
+			} else {
+				 var frymo_query = {};
+			}
+
+			// console.log('config', config);
+
+			if (typeof filterInitialSettings.query_id === 'undefined') {
+				filterInitialSettings.query_id = '';
+			}
+
+
+			frymo_query[filterInitialSettings.query_id] = {};
+			
+
+
+
+			if (Object.keys(frymo_query).length !== 0) {
+				 var new_url = frymoReplaceUrlParam(current_url, 'frymo_query', encodeURI(JSON.stringify(frymo_query)));
+			} else {
+				 var new_url = frymoRemoveParameterFromUrl(current_url, 'frymo_query');
+			}
+
+			window.history.pushState(JSON.stringify(frymo_query), '', new_url);
+
+		});
+
 		frymoProcessSubmitingSearchFilterForm($scope);
 	};
 
