@@ -1,0 +1,15 @@
+.domu-apartment-meta {
+   display: flex;
+   gap: 12px;
+   color: #161514;
+   font-size: 14px;
+   font-family: "Mark Book", Sans-serif;
+}
+
+.domu-apartment-meta .bullet {
+   color: #161514;
+   opacity: 0.3;
+}
+.domu-apartment-meta .price {
+   font-weight: bold;
+}

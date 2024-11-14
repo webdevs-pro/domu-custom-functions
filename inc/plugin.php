@@ -10,52 +10,16 @@ require_once ( DCF_PLUGIN_DIR . '/inc/elementor/elementor.php' );
 // Register the script and style globally
 add_action( 'elementor/frontend/after_register_scripts', 'dcf_register_assets' ); // Register the assets during the enqueue stage
 function dcf_register_assets() {
-	// Register JS file
-	wp_enqueue_script(
-		'domu-custom-js', // Handle for the script
-		DCF_PLUGIN_DIR_URL  . '/inc/shortcodes/assets/domu-custom.js',
-		array( 'jquery' ),
-		DCF_PLUGIN_VERSION,
-		true // Load in the footer
-	);
-
 	// Register CSS file
 	wp_enqueue_style(
 		'domu-custom-css', // Handle for the style
-		DCF_PLUGIN_DIR_URL  . '/inc/shortcodes/assets/domu-custom.css',
+		DCF_PLUGIN_DIR_URL  . '/inc/assets/domu-custom.css',
 		array(), // Dependencies (empty array means no dependencies)
 		DCF_PLUGIN_VERSION,
 		'all' // Media type: 'all', 'screen', 'print', etc.
 	);
 }
 
-
-// Shortcode: Render Slider Nav Buttons
-add_shortcode('domu_slider_nav_buttons_with_fractions', 'dcf_render_slider_nav_buttons_with_fractions');
-function dcf_render_slider_nav_buttons_with_fractions() {
-	ob_start();
-	?>
-
-	<div class="domu-slide-inner-control">
-		<div class="slide-inner-button-prev">
-			<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<circle cx="24" cy="24" r="23.5" stroke="#161514"/>
-					<path d="M27.5 16.5L20 24L27.5 31.5" stroke="#161514" stroke-linecap="round" stroke-linejoin="round"/>
-			</svg>
-		</div>
-		<div class="slide-inner-button-next">
-			<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<circle cx="24" cy="24" r="23.5" stroke="#161514"/>
-					<path d="M27.5 16.5L20 24L27.5 31.5" stroke="#161514" stroke-linecap="round" stroke-linejoin="round"/>
-			</svg>
-		</div>
-		<div class="slide-inner-fraction">1/1</div>
-	</div>
-
-	<?php
-
-	return ob_get_clean();
-}
 
 // Shortcode: Render Object Meta
 add_shortcode('domu_object_meta', 'dcf_render_object_meta');

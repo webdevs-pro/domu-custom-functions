@@ -71,20 +71,18 @@ class DCF_Calculated_Price extends Elementor\Widget_Base {
 
 		$monthly_price = get_post_meta( get_the_ID(), 'frymo_price_num', true );
 
-		if ( isset( $check_in_date ) && isset( $check_out_date ) ) {
+		if ( ! empty( $check_in_date ) && ! empty( $check_out_date ) ) {
 			$number_of_months = $this->calculate_month_difference( $check_in_date, $check_out_date );
 			$total_price      = intval( $monthly_price ) * $number_of_months; 
 		} else {
 			$total_price      = intval( $monthly_price ) * 3; 
 		}
 
-
-
 		echo '<div class="calculated-price">';
 
 			echo '<span class="monthly-price">' . frymo_format_number_de( $monthly_price ) . '€/mo</span>';
 			
-			if ( isset( $check_in_date ) && isset( $check_out_date ) ) {
+			if ( ! empty( $check_in_date ) && ! empty( $check_out_date ) ) {
 				echo '<span class="total-price">' . frymo_format_number_de( $total_price ) . '€ Total</span>';
 			} else {
 				echo '<span class="total-price">Ab ' . frymo_format_number_de( $total_price ) . '€</span>';
