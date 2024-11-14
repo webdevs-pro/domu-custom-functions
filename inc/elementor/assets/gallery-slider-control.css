@@ -6,6 +6,7 @@
 .elementor-widget-dcf-gallery-slider-control .prev-button,
 .elementor-widget-dcf-gallery-slider-control .next-button {
    cursor: pointer;
+   transition: opacity 300ms;
 }
 .elementor-widget-dcf-gallery-slider-control .prev-button.disabled,
 .elementor-widget-dcf-gallery-slider-control .next-button.disabled {
