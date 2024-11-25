@@ -28,3 +28,42 @@ function dcf_register_assets() {
 	// 	'all' // Media type: 'all', 'screen', 'print', etc.
 	// );
 }
+
+
+/**
+ * Hook to add a custom menu item below "Comments."
+ * Adds a "Services" menu item below "Comments" in the admin menu.
+ *
+ * @return void
+ */
+add_action( 'admin_menu', 'add_services_menu_below_comments' );
+function add_services_menu_below_comments() {
+	// Add the custom menu item.
+	add_menu_page(
+		__( 'Services', 'text-domain' ),
+		__( 'Services', 'text-domain' ),
+		'manage_categories',
+		'edit-tags.php?taxonomy=udft_ausstattungen',
+		'',
+		'dashicons-saved',
+		40
+	);
+}
+
+/**
+ * Highlight "Services" menu when on the taxonomy page.
+ *
+ * @param string $parent_file The parent file of the current submenu.
+ * @return string Modified parent file.
+ */
+add_filter( 'parent_file', 'highlight_services_menu' );
+function highlight_services_menu( $parent_file ) {
+	// Check if we're on the 'udft_ausstattungen' taxonomy page.
+	if ( isset( $_GET['taxonomy'] ) && 'udft_ausstattungen' === $_GET['taxonomy'] ) {
+		$parent_file = 'edit-tags.php?taxonomy=udft_ausstattungen'; // Set "Services" as the highlighted menu.
+	}
+
+	return $parent_file;
+}
+
+
