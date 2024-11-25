@@ -109,7 +109,6 @@ jQuery(window).on('elementor/frontend/init', function () {
 
 		});
 
-		frymoProcessSubmitingSearchFilterForm($scope);
 	};
 
 	elementorFrontend.hooks.addAction('frontend/element_ready/dcf-dates-range-form.default', DCF_Dates_Range_Form);
