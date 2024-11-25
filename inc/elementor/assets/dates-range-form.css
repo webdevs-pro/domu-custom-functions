@@ -3,6 +3,11 @@
    gap: 15px;
    align-items: flex-end;
 }
+.elementor-widget-dcf-dates-range-form form.layout-column {
+   flex-direction: column;
+   align-items: stretch;
+}
+
 .elementor-widget-dcf-dates-range-form form label {
    display: flex;
    flex-direction: column;

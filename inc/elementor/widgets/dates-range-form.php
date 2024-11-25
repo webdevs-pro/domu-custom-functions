@@ -59,7 +59,7 @@ class DCF_Dates_Range_Form extends Elementor\Widget_Base {
 
 			$this->add_control( 'redirect_url', [
 				'type'          => Controls_Manager::URL,
-				'label' => esc_html__( 'Weiterleitungs-URL', 'frymo' ),
+				'label'         => esc_html__( 'Weiterleitungs-URL', 'frymo' ),
 				'show_external' => true,
 				'dynamic'       => [
 					'active'     => true,
@@ -69,6 +69,27 @@ class DCF_Dates_Range_Form extends Elementor\Widget_Base {
 				'condition'     => [
 					'form_action' => 'reload',
 				]
+			] );
+
+			$this->add_control( 'form_layout', [
+				'label'   => esc_html__( 'Layout', 'frymo' ),
+				'type'    => \Elementor\Controls_Manager::SELECT,
+				'default' => 'row',
+				'options' => [
+					'row'     => esc_html__( 'Row', 'frymo' ),
+					'column'  => esc_html__( 'Column', 'frymo' ),
+				],
+				'prefix_class' => 'layout-'
+			] );
+
+			$this->add_control( 'button_label', [
+				'type'        => Controls_Manager::TEXT,
+				'label'       => esc_html__( 'Button Label', 'frymo' ),
+				'label_block' => true,
+				'default'     => 'Check',
+				'ai'          => [
+					'active' => false,
+				],
 			] );
 
 			$this->add_control( 'query_id', [
@@ -136,7 +157,7 @@ class DCF_Dates_Range_Form extends Elementor\Widget_Base {
 				echo '<input type="text" class="dcf-date-input" name="udfm_auszugsdatum" readonly="readonly" value="' . $auszugsdatum . '" placeholder="Select Date" required/>';
 			echo '</label>';
 
-			echo '<input type="submit" class="frymo-submit" value="Check" />';
+			echo '<input type="submit" class="frymo-submit" value="' . $this->settings['button_label'] . '" />';
 
 		echo '</form>';
 	}
