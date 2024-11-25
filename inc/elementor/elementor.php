@@ -139,6 +139,9 @@ class DCF_Elementor {
 
 		require ( DCF_PLUGIN_DIR . '/inc/elementor/widgets/gallery-slider-control.php' );
 		\Elementor\Plugin::instance()->widgets_manager->register( new DCF_Gallery_Slider_Control() );
+
+		require ( DCF_PLUGIN_DIR . '/inc/elementor/widgets/services-grid.php' );
+		\Elementor\Plugin::instance()->widgets_manager->register( new DCF_Services_Grid() );
 	}
 
 
@@ -164,6 +167,7 @@ class DCF_Elementor {
 		wp_register_style( 'dcf-dates-range-form', DCF_PLUGIN_DIR_URL . 'inc/elementor/assets/dates-range-form.css', array(), DCF_PLUGIN_VERSION );  
 		wp_register_style( 'dcf-calculated-price', DCF_PLUGIN_DIR_URL . 'inc/elementor/assets/calculated-price.css', array(), DCF_PLUGIN_VERSION );  
 		wp_register_style( 'dcf-gallery-slider-control', DCF_PLUGIN_DIR_URL . 'inc/elementor/assets/gallery-slider-control.css', array(), DCF_PLUGIN_VERSION );  
+		wp_register_style( 'dcf-services-grid', DCF_PLUGIN_DIR_URL . 'inc/elementor/assets/services-grid.css', array(), DCF_PLUGIN_VERSION );  
 	}
 
 
