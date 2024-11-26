@@ -39,7 +39,7 @@ class DCF_Dates_Range_Form extends Elementor\Widget_Base {
 	}
 
 	public function get_script_depends() {
-		return ['dcf-dates-range-form', 'flatpickr'];
+		return ['dcf-dates-range-form', 'flatpickr', 'frymo-frontend'];
 	}
 
 	protected function register_controls() {
