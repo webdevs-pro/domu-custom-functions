@@ -361,43 +361,85 @@ class DCF_Elementor {
 			'title' => 'Domu'
 		] );
 
-		// Define the anonymous class for the custom dynamic tag
+		/**
+		 * Outputs guests count with German singular or plural for 'Gast/Gäste'.
+		 */
 		$dynamic_tags->register(new class extends \Elementor\Core\DynamicTags\Tag {
 
 			public function get_name() {
-					return 'custom_guest_count';
+				return 'domu_guest_count';
 			}
 
 			public function get_title() {
-					return 'Guest Count (Gast/Gäste)';
+				return 'Guest Count (Gast/Gäste)';
 			}
 
 			public function get_group() {
-					return 'domu_group';
+				return 'domu_group';
 			}
 
 			public function get_categories() {
-					return [ \Elementor\Modules\DynamicTags\Module::TEXT_CATEGORY ];
+				return [ \Elementor\Modules\DynamicTags\Module::TEXT_CATEGORY ];
 			}
 
 			protected function render() {
-					// Get the current post ID
-					$post_id = get_the_ID();
+				// Get the current post ID
+				$post_id = get_the_ID();
 
-					// Retrieve the 'anzahl_der_gaste' meta field value
-					$guests = get_post_meta( $post_id, 'anzahl_der_gaste', true );
+				// Retrieve the 'anzahl_der_gaste' meta field value
+				$guests = get_post_meta( $post_id, 'anzahl_der_gaste', true );
 
-					// Default to 1 if no value is found
-					$guests = $guests ?: 1;
+				// Default to 1 if no value is found
+				$guests = $guests ?: 1;
 
-					// Determine singular or plural for "Gast/Gäste"
-					$guests_text = ( $guests == 1 ) ? 'Gast' : 'Gäste';
+				// Determine singular or plural for "Gast/Gäste"
+				$guests_text = ( $guests == 1 ) ? 'Gast' : 'Gäste';
 
-					// Output the formatted guest count with the correct label
-					echo esc_html( $guests . ' ' . $guests_text );
+				// Output the formatted guest count with the correct label
+				echo esc_html( $guests . ' ' . $guests_text );
 			}
 
-		});
+		} );
+
+
+		/**
+		 * Output 'auszugsdatum' field as a German-formatted date.
+		 */
+		$dynamic_tags->register(new class extends \Elementor\Core\DynamicTags\Tag {
+
+			public function get_name() {
+				return 'domu_available_from';
+			}
+
+			public function get_title() {
+				return 'Available From Date';
+			}
+
+			public function get_group() {
+				return 'domu_group';
+			}
+
+			public function get_categories() {
+				return [ \Elementor\Modules\DynamicTags\Module::TEXT_CATEGORY ];
+			}
+
+			protected function render() {
+				// Get the current post ID
+				$post_id = get_the_ID();
+
+				// Retrieve the 'anzahl_der_gaste' meta field value
+				$date = get_post_meta( $post_id, 'auszugsdatum', true );
+
+				if ( ! empty( $date ) ) {
+					$datetime = new DateTime( $date );
+					$german_date = $datetime->format( 'd.m.Y' );
+					echo $german_date; 
+				} else {
+					echo '';
+				}
+			}
+
+		} );
 	}
   
 }
