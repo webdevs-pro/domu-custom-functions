@@ -1,13 +1,11 @@
-.elementor-widget-dcf-services-grid ul {
+.elementor-widget-dcf-services-grid .dcf-services-grid {
    display: grid;
    grid-template-columns: 1fr 1fr;
    column-gap: 30px;
 }
 
-
-
-.elementor-widget-dcf-services-grid ul, 
-.elementor-widget-dcf-services-grid li {
+.elementor-widget-dcf-services-grid .dcf-services-grid, 
+.elementor-widget-dcf-services-grid .dcf-service {
    list-style: none;
    margin: 0;
    padding: 0;
@@ -21,9 +19,11 @@
    align-items: center;
    border-top: 1px solid rgba(22, 21, 20, 0.2) 
 }
+
 .elementor-widget-dcf-services-grid .dcf-service-icon {
    height: 20px;
 }
+
 .elementor-widget-dcf-services-grid .dcf-service-icon img {
    object-fit: contain;
 }

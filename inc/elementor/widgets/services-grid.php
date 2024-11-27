@@ -98,7 +98,7 @@ class DCF_Services_Grid extends Elementor\Widget_Base {
          return;
       }
 
-      echo '<ul>';
+      echo '<ul class="dcf-services-grid">';
 
       foreach ( $terms as $term ) {
 
