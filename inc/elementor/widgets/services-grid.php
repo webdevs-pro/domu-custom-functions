@@ -55,6 +55,8 @@ class DCF_Services_Grid extends Elementor\Widget_Base {
 
 		$this->end_controls_section();
 
+      Frymo_Elementor::get_heading_controls_section( $this, 'h3', esc_html__( 'Ausstattung', 'frymo' ), true, true );
+
 		$this->start_controls_section( 'section_style', [
 			'label' => esc_html__( 'Style', 'frymo' ),
          'tab'   => Elementor\Controls_Manager::TAB_STYLE,
@@ -75,29 +77,32 @@ class DCF_Services_Grid extends Elementor\Widget_Base {
          ] );
 
 		$this->end_controls_section();
+
+		Frymo_Elementor::get_heading_style_controls_section( $this );
+
 	}
 
 
 	protected function render() {
 		$settings = $this->get_settings();
 
-         // Fetch all terms attached to the post for the 'udft_ausstattungen' taxonomy
+      // Fetch all terms attached to the post for the 'udft_ausstattungen' taxonomy
       $terms = wp_get_post_terms( get_the_ID(), 'udft_ausstattungen' );
 
-      // Check if terms are found
-      if ( is_wp_error( $terms ) || empty( $terms )) {
+      if ( ( ! is_wp_error( $terms ) && ! empty( $terms ) ) || Elementor\Plugin::$instance->editor->is_edit_mode() ) {
+			Frymo_Elementor::render_heading( $this );
+		}
+
+
+      if ( is_wp_error( $terms ) || empty( $terms ) ) {
          return;
       }
-
-      $fallback_icon_id = $settings['fallback_icon']['id'];
 
       echo '<ul>';
 
       foreach ( $terms as $term ) {
 
          $icon_id = get_term_meta( $term->term_id, 'icon', true ) ?: $settings['fallback_icon']['id'];
-
-
 
          echo '<li class="dcf-service">';
 
