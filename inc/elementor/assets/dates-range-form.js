@@ -16,6 +16,58 @@ jQuery(window).on('elementor/frontend/init', function () {
 			return date.getDate() === 14 || date.getDate() === lastDay;
 		};
 
+		// Manually define German locale strings
+		flatpickr.l10ns.de = {
+			weekdays: {
+				shorthand: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
+				longhand: [
+					"Sonntag",
+					"Montag",
+					"Dienstag",
+					"Mittwoch",
+					"Donnerstag",
+					"Freitag",
+					"Samstag"
+				]
+			},
+			months: {
+				shorthand: [
+					"Jan",
+					"Feb",
+					"Mär",
+					"Apr",
+					"Mai",
+					"Jun",
+					"Jul",
+					"Aug",
+					"Sep",
+					"Okt",
+					"Nov",
+					"Dez"
+				],
+				longhand: [
+					"Januar",
+					"Februar",
+					"März",
+					"April",
+					"Mai",
+					"Juni",
+					"Juli",
+					"August",
+					"September",
+					"Oktober",
+					"November",
+					"Dezember"
+				]
+			},
+			firstDayOfWeek: 1, // Monday is the first day of the week in Germany
+			rangeSeparator: " bis ", // Separator for date ranges
+			weekAbbreviation: "KW", // Abbreviation for "calendar week"
+			scrollTitle: "Zum Ändern scrollen", // Tooltip for scrolling
+			toggleTitle: "Zum Umschalten klicken", // Tooltip for toggling
+			time_24hr: true // Use 24-hour time format
+		};
+
 		// Initialize Flatpickr on the move-in date field
 		if (moveInDateField.length) {
 			moveInDateField.flatpickr({
@@ -25,6 +77,7 @@ jQuery(window).on('elementor/frontend/init', function () {
 					minDate: "today",
 					allowInput: true,
 					enable: [AllowedCheckInDays],
+					locale: flatpickr.l10ns.de,
 					onReady: function(selectedDates, dateStr, instance) {
 						// Add a custom class to the Flatpickr wrapper
 						$(instance.calendarContainer).addClass('domu-flatpikr-wrapper');
@@ -65,6 +118,7 @@ jQuery(window).on('elementor/frontend/init', function () {
 					minDate: "today",
 					allowInput: true,
 					enable: [AllowedCheckOutDays],
+					locale: flatpickr.l10ns.de,
 					onReady: function(selectedDates, dateStr, instance) {
 						// Add a custom class to the Flatpickr wrapper
 						$(instance.calendarContainer).addClass('domu-flatpikr-wrapper');
