@@ -49,3 +49,9 @@
    display: flex;
    justify-content: space-between;
 }
+@media(ma-width: 768px) {
+   .elementor-widget-dcf-dates-range-form.layout-column form {
+      flex-direction: column;
+      align-items: stretch;
+   }
+}
