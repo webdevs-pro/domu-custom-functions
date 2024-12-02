@@ -362,46 +362,88 @@ class DCF_Elementor {
 		] );
 
 		/**
-		 * Outputs guests count with German singular or plural for 'Gast/Gäste'.
+		 * Outputs guest count with customizable singular or plural for 'Gast/Gäste'.
 		 */
 		$dynamic_tags->register(
 			new class extends \Elementor\Core\DynamicTags\Tag {
 
+				/**
+				 * Get tag name.
+				*/
 				public function get_name() {
 					return 'domu_guest_count';
 				}
 
+				/**
+				 * Get tag title.
+				*/
 				public function get_title() {
 					return 'Guest Count (Gast/Gäste)';
 				}
 
+				/**
+				 * Get tag group.
+				*/
 				public function get_group() {
 					return 'domu_group';
 				}
 
+				/**
+				 * Get tag categories.
+				*/
 				public function get_categories() {
 					return [ \Elementor\Modules\DynamicTags\Module::TEXT_CATEGORY ];
 				}
 
-				protected function render() {
-					// Get the current post ID
-					$post_id = get_the_ID();
-
-					// Retrieve the 'anzahl_der_gaste' meta field value
-					$guests = get_post_meta( $post_id, 'anzahl_der_gaste', true );
-
-					// Default to 1 if no value is found
-					$guests = $guests ?: 1;
-
-					// Determine singular or plural for "Gast/Gäste"
-					$guests_text = ( $guests == 1 ) ? 'Gast' : 'Gäste';
-
-					// Output the formatted guest count with the correct label
-					echo esc_html( $guests . ' ' . $guests_text );
+				/**
+				 * Define controls for singular and plural strings.
+				*/
+				protected function get_fields() {
+					return [
+						[
+							'name'        => 'singular_label',
+							'label'       => 'Singular Label',
+							'type'        => \Elementor\Controls_Manager::TEXT,
+							'default'     => 'Gast', // Default singular form.
+							'placeholder' => 'e.g. Gast',
+						],
+						[
+							'name'        => 'plural_label',
+							'label'       => 'Plural Label',
+							'type'        => \Elementor\Controls_Manager::TEXT,
+							'default'     => 'Gäste', // Default plural form.
+							'placeholder' => 'e.g. Gäste',
+						],
+					];
 				}
 
+				/**
+				 * Render the dynamic tag output.
+				*/
+				protected function render() {
+					// Get the current post ID.
+					$post_id = get_the_ID();
+
+					// Retrieve the 'anzahl_der_gaste' meta field value.
+					$openimmo_verwaltung_objekt = get_post_meta( $post_id, 'openimmo_verwaltung_objekt', true );
+
+					// Default to 1 guest if the value is missing or invalid.
+					$guests = isset( $openimmo_verwaltung_objekt['max_personen'] ) ? (int) $openimmo_verwaltung_objekt['max_personen'] : 1;
+
+					// Get user-defined labels from the controls.
+					$settings       = $this->get_settings();
+					$singular_label = ! empty( $settings['singular_label'] ) ? sanitize_text_field( $settings['singular_label'] ) : 'Gast';
+					$plural_label   = ! empty( $settings['plural_label'] ) ? sanitize_text_field( $settings['plural_label'] ) : 'Gäste';
+
+					// Determine whether to use singular or plural.
+					$guests_text = ( $guests == 1 ) ? $singular_label : $plural_label;
+
+					// Output the formatted guest count with the correct label.
+					echo esc_html( $guests . ' ' . $guests_text );
+				}
 			}
 		);
+
 
 
 		/**
@@ -435,12 +477,12 @@ class DCF_Elementor {
 						$datetime = new DateTime( $date );
 
 						if ( $datetime <= $current_date ) {
-							echo 'verfügbar jetzt';
+							echo 'sofort verfügbar';
 						} else {
 							echo 'verfügbar ab ' . esc_html( $datetime->format( 'd.m.Y' ) );
 						}
 					} else {
-						echo 'verfügbar jetzt';
+						echo 'sofort verfügbar';
 					}
 				}
 
