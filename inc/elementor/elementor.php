@@ -398,23 +398,28 @@ class DCF_Elementor {
 				/**
 				 * Define controls for singular and plural strings.
 				*/
-				protected function get_fields() {
-					return [
-						[
-							'name'        => 'singular_label',
-							'label'       => 'Singular Label',
-							'type'        => \Elementor\Controls_Manager::TEXT,
-							'default'     => 'Gast', // Default singular form.
-							'placeholder' => 'e.g. Gast',
+				protected function register_controls() {
+
+					$this->add_control( 'singular_label', [
+						'label'       => 'Singular Label',
+						'type'        => \Elementor\Controls_Manager::TEXT,
+						'default'     => 'Gast', // Default singular form.
+						'placeholder' => 'e.g. Gast',
+						'ai'          => [
+							'active' => false,
 						],
-						[
-							'name'        => 'plural_label',
-							'label'       => 'Plural Label',
-							'type'        => \Elementor\Controls_Manager::TEXT,
-							'default'     => 'Gäste', // Default plural form.
-							'placeholder' => 'e.g. Gäste',
+					] );
+
+					$this->add_control( 'plural_label', [
+						'label'       => 'Plural Label',
+						'type'        => \Elementor\Controls_Manager::TEXT,
+						'default'     => 'Gäste', // Default singular form.
+						'placeholder' => 'e.g. Gäste',
+						'ai'          => [
+							'active' => false,
 						],
-					];
+					] );
+
 				}
 
 				/**
