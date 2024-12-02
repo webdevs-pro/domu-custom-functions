@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Domu Custom Functions
  * Plugin URI: https://frymo.de
- * Version: 1.9.4
+ * Version: 1.9.5
  * Description: Custom functions for Domu.
  * Author: Stark Systems UG
  * Author URI: https://stark-systems.de
