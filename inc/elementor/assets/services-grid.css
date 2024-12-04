@@ -1,6 +1,5 @@
 .elementor-widget-dcf-services-grid .dcf-services-grid {
    display: grid;
-   grid-template-columns: 1fr 1fr;
    column-gap: 30px;
 }
 
