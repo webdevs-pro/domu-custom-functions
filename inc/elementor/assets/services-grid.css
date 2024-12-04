@@ -22,6 +22,7 @@
 
 .elementor-widget-dcf-services-grid .dcf-service-icon {
    height: 20px;
+   display: flex;
 }
 
 .elementor-widget-dcf-services-grid .dcf-service-icon img {
