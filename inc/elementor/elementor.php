@@ -18,6 +18,7 @@ class DCF_Elementor {
 		add_action( 'elementor/widgets/register', array( $this, 'on_widgets_registered' ) );
 		add_filter( 'frymo/query/', array( $this, 'add_date_range_to_query_args' ), 10, 3 );
 		add_action( 'elementor/dynamic_tags/register', array( $this, 'register_dynamic_tags' ) );
+		add_filter( 'frymo/isting_widget/sorting_options', array( $this, 'modify_listing_sorting_options' ) );
 	}
 
 	public function init() {
@@ -266,24 +267,47 @@ class DCF_Elementor {
 
 		// Ensure the check-in date is provided
 		if ( empty( $check_in_date ) || empty( $check_out_date ) ) {
-			return $args; // No check-in date, return original args
+
+			if ( $settings['order_by'] === 'default' ) {
+				$args['meta_key']  = 'auszugsdatum';
+				$args['orderby']   = 'meta_value';
+				$args['order']     = 'ASC';
+			}
+
+			// switch ( $settings['order_by'] ) {
+			// 	case 'default':
+			// 		$args['meta_key']  = 'auszugsdatum';
+			// 		$args['orderby']   = 'meta_value';
+			// 		$args['order']     = 'ASC';
+			// 		break;
+	
+			// 	case 'price_asc':
+			// 		$args['meta_key']  = 'frymo_price_num';
+			// 		$args['orderby']   = 'meta_value';
+			// 		$args['order']     = 'ASC';
+			// 		break;
+	
+			// 	case 'price_desc':
+			// 		$args['meta_key']  = 'frymo_price_num';
+			// 		$args['orderby']   = 'meta_value';
+			// 		$args['order']     = 'DESC';
+			// 		break;
+	
+			// 	case 'rooms_asc':
+			// 		$args['meta_key']  = 'anzahl_zimmer';
+			// 		$args['orderby']   = 'meta_value';
+			// 		$args['order']     = 'ASC';
+			// 		break;
+	
+			// 	case 'rooms_desc':
+			// 		$args['meta_key']  = 'anzahl_zimmer';
+			// 		$args['orderby']   = 'meta_value';
+			// 		$args['order']     = 'DESC';
+			// 		break;
+			// }
+
+			return $args;
 		}
-
-
-		// // Plus 3 months by default
-		// if ( ! isset( $check_out_date ) || ! $check_out_date  ) {
-		// 	try {
-		// 		$check_in_datetime = new DateTime( $check_in_date );
-		// 		$check_in_datetime->modify('+2 months'); // Add 3 months
-		// 		$check_in_datetime->modify('last day of this month'); // Set to last day of the month
-		// 		$check_out_date = $check_in_datetime->format('Y-m-d'); // Format as needed
-		// 	} catch (Exception $e) {
-		// 		// Handle invalid date format if needed
-		// 		return $args;
-		// 	}
-		// }
-
-
 
 
 		// Initialize meta query if not already set
@@ -299,6 +323,43 @@ class DCF_Elementor {
 			'post_status'    => 'publish',
 			'fields'         => 'ids',
 		);
+		if ( $settings['order_by'] === 'default' ) {
+			$args_1['meta_key']  = 'auszugsdatum';
+			$args_1['orderby']   = 'meta_value';
+			$args_1['order']     = 'ASC';
+		} 
+
+		switch ( $settings['order_by'] ) {
+			case 'default':
+				$args_1['meta_key']  = 'auszugsdatum';
+				$args_1['orderby']   = 'meta_value';
+				$args_1['order']     = 'ASC';
+				break;
+
+			case 'price_asc':
+				$args_1['meta_key']  = 'frymo_price_num';
+				$args_1['orderby']   = 'meta_value';
+				$args_1['order']     = 'ASC';
+				break;
+
+			case 'price_desc':
+				$args_1['meta_key']  = 'frymo_price_num';
+				$args_1['orderby']   = 'meta_value';
+				$args_1['order']     = 'DESC';
+				break;
+
+			case 'rooms_asc':
+				$args_1['meta_key']  = 'anzahl_zimmer';
+				$args_1['orderby']   = 'meta_value';
+				$args_1['order']     = 'ASC';
+				break;
+
+			case 'rooms_desc':
+				$args_1['meta_key']  = 'anzahl_zimmer';
+				$args_1['orderby']   = 'meta_value';
+				$args_1['order']     = 'DESC';
+				break;
+		}
 
 		$query_1 = new WP_Query( $args_1 );
 		// error_log( "query_1\n" . print_r( $query_1, true ) . "\n" );
@@ -311,30 +372,61 @@ class DCF_Elementor {
 			);
 		}
 
-		// error_log( "all_posts\n" . print_r( $all_posts, true ) . "\n" );
+
+		// // Sort $all_posts by check_out_date (einzugsdatum)
+		// uasort(
+		// 	$all_posts,
+		// 	function ( $a, $b ) {
+		// 		// Convert check_in_date to timestamps for comparison
+		// 		$date_a = ! empty( $a['check_out_date'] ) ? strtotime( $a['check_out_date'] ) : PHP_INT_MAX;
+		// 		$date_b = ! empty( $b['check_out_date'] ) ? strtotime( $b['check_out_date'] ) : PHP_INT_MAX;
+
+		// 		// Return comparison result for sorting in ascending order
+		// 		return $date_a <=> $date_b;
+		// 	}
+		// );
+
+
 
 
 		$filter = array_filter( $all_posts, function( $dates ) use ( $check_in_date, $check_out_date ) {
-			// Include properties with no check-in and check-out dates
-			if ( empty( $dates['check_in_date'] ) && empty( $dates['check_out_date'] ) ) {
+			$property_check_in = ! empty( $dates['check_in_date'] ) ? strtotime( $dates['check_in_date'] ) : null;
+			$property_check_out = ! empty( $dates['check_out_date'] ) ? strtotime( $dates['check_out_date'] ) : null;
+	
+			$requested_check_in = strtotime( $check_in_date );
+			$requested_check_out = strtotime( $check_out_date );
+	
+			// Case 1: Property has no check-in or check-out dates (completely free)
+			if ( is_null( $property_check_in ) && is_null( $property_check_out ) ) {
 				return true;
 			}
-			// Include if check-in date is greater than check-out date and after requested check_out_date
-			if ( ! empty( $dates['check_in_date'] ) && ! empty( $dates['check_out_date'] ) 
-				&& strtotime( $dates['check_in_date'] ) > strtotime( $dates['check_out_date'] )
-				&& strtotime( $dates['check_in_date'] ) > strtotime( $check_out_date ) ) {
+	
+			// Case 2: Property's check-out date is strictly before the requested check-in date
+			if ( ! is_null( $property_check_out ) && $property_check_out < $requested_check_in ) {
 				return true;
 			}
-			// Include if check-out date is before requested $check_in_date
-			if ( ! empty( $dates['check_out_date'] ) && strtotime( $dates['check_out_date'] ) < strtotime( $check_in_date ) ) {
+	
+			// Case 3: Property's check-in date is strictly after the requested check-out date
+			if ( ! is_null( $property_check_in ) && $property_check_in > $requested_check_out ) {
 				return true;
 			}
-			// Include if check-in date is after requested $check_out_date
-			if ( ! empty( $dates['check_in_date'] ) && strtotime( $dates['check_in_date'] ) > strtotime( $check_out_date ) ) {
-				return true;
+	
+			// Case 4: Handle back-to-back bookings
+			// Exclude properties where check-in is the day after requested check-out
+			if ( ! is_null( $property_check_in ) && ! is_null( $property_check_out ) ) {
+				// Check if check-out happens on the requested check-in date (overlap)
+				if ( $property_check_out >= $requested_check_in && $property_check_in <= $requested_check_out ) {
+					return false;
+				}
+	
+				// Back-to-back: Check-out is immediately followed by check-in
+				if ( $property_check_out + DAY_IN_SECONDS == $property_check_in ) {
+					return false;
+				}
 			}
-			return false;
-		});
+	
+			return false; // Exclude everything else
+		} );
 
 
 
@@ -344,13 +436,17 @@ class DCF_Elementor {
 
 		// Add 'post__in' to $args to only include filtered post IDs
 		$args['post__in'] = $filtered_post_ids;
-
+		$args['orderby']  = 'post__in';
 
 		// Uncomment for debugging
 		error_log( "args\n" . print_r( $args, true ) . "\n" );
 
 		return $args;
 	}
+
+
+
+	
 
 
 
@@ -494,6 +590,15 @@ class DCF_Elementor {
 			}
 		);
 
+	}
+
+
+
+
+	public function modify_listing_sorting_options( $options ) {
+		$options['default'] = 'zuerst verfügbar';
+
+		return $options;
 	}
   
 }
