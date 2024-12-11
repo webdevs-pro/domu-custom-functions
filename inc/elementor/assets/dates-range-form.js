@@ -5,15 +5,15 @@ jQuery(window).on('elementor/frontend/init', function () {
 		var moveInDateField = $scope.find('input[name="udfm_einzugsdatum"]');
 		var moveOutDateField = $scope.find('input[name="udfm_auszugsdatum"]');
 
-		// Function to allow only the 1st and 14th days of each month for check-in
+		// Function to allow only the 1st and 16th days of each month for check-in
 		var AllowedCheckInDays = function(date) {
-			return date.getDate() === 1 || date.getDate() === 15;
+			return date.getDate() === 1 || date.getDate() === 16;
 		};
 
-		// Function to allow only the 14th and the last day of each month for check-out
+		// Function to allow only the 15th and the last day of each month for check-out
 		var AllowedCheckOutDays = function(date) {
 			var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-			return date.getDate() === 14 || date.getDate() === lastDay;
+			return date.getDate() === 15 || date.getDate() === lastDay;
 		};
 
 		// Manually define German locale strings
