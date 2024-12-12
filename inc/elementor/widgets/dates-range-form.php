@@ -152,9 +152,9 @@ class DCF_Dates_Range_Form extends Elementor\Widget_Base {
 				echo '<input type="text" class="dcf-date-input" name="udfm_einzugsdatum" readonly="readonly" value="' . $einzugsdatum . '" placeholder="Datum wählen" required/>';
 			echo '</label>';
 			
-			echo '<label>';
+			echo '<label style="display: none;">';
 				echo 'Auszugsdatum';
-				echo '<input type="text" class="dcf-date-input" name="udfm_auszugsdatum" readonly="readonly" value="' . $auszugsdatum . '" placeholder="Datum wählen" required/>';
+				echo '<input type="text" class="dcf-date-input" name="udfm_auszugsdatum" readonly="readonly" value="' . $auszugsdatum . '" placeholder="Datum wählen (optional)"/>';
 			echo '</label>';
 
 			echo '<input type="submit" class="frymo-submit" value="' . $this->settings['button_label'] . '" />';

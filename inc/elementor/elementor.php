@@ -261,50 +261,15 @@ class DCF_Elementor {
 			$check_out_date = $_POST['settings']['udfm_auszugsdatum'] ?? '';
 		}
 
-		// error_log( "check_in_date\n" . print_r( $check_in_date, true ) . "\n" );
-		// error_log( "check_out_date\n" . print_r( $check_out_date, true ) . "\n" );
-
-
 		// Ensure the check-in date is provided
-		if ( empty( $check_in_date ) || empty( $check_out_date ) ) {
+		// if ( empty( $check_in_date ) || empty( $check_out_date ) ) {
+		if ( empty( $check_in_date ) ) {
 
 			if ( $settings['order_by'] === 'default' ) {
 				$args['meta_key']  = 'auszugsdatum';
 				$args['orderby']   = 'meta_value';
 				$args['order']     = 'ASC';
 			}
-
-			// switch ( $settings['order_by'] ) {
-			// 	case 'default':
-			// 		$args['meta_key']  = 'auszugsdatum';
-			// 		$args['orderby']   = 'meta_value';
-			// 		$args['order']     = 'ASC';
-			// 		break;
-	
-			// 	case 'price_asc':
-			// 		$args['meta_key']  = 'frymo_price_num';
-			// 		$args['orderby']   = 'meta_value';
-			// 		$args['order']     = 'ASC';
-			// 		break;
-	
-			// 	case 'price_desc':
-			// 		$args['meta_key']  = 'frymo_price_num';
-			// 		$args['orderby']   = 'meta_value';
-			// 		$args['order']     = 'DESC';
-			// 		break;
-	
-			// 	case 'rooms_asc':
-			// 		$args['meta_key']  = 'anzahl_zimmer';
-			// 		$args['orderby']   = 'meta_value';
-			// 		$args['order']     = 'ASC';
-			// 		break;
-	
-			// 	case 'rooms_desc':
-			// 		$args['meta_key']  = 'anzahl_zimmer';
-			// 		$args['orderby']   = 'meta_value';
-			// 		$args['order']     = 'DESC';
-			// 		break;
-			// }
 
 			return $args;
 		}
@@ -317,79 +282,71 @@ class DCF_Elementor {
 		unset( $args['meta_query']['udfm_einzugsdatum'], $args['meta_query']['udfm_auszugsdatum'] );
 
 
-		$args_1 = array(
+		$all_posts_args = array(
 			'post_type'      => FRYMO_POST_TYPE,
 			'posts_per_page' => -1,
 			'post_status'    => 'publish',
 			'fields'         => 'ids',
 		);
-		if ( $settings['order_by'] === 'default' ) {
-			$args_1['meta_key']  = 'auszugsdatum';
-			$args_1['orderby']   = 'meta_value';
-			$args_1['order']     = 'ASC';
-		} 
+
+		// if ( $settings['order_by'] === 'default' ) {
+		// 	$all_posts_args['meta_key']  = 'auszugsdatum';
+		// 	$all_posts_args['orderby']   = 'meta_value';
+		// 	$all_posts_args['order']     = 'ASC';
+		// } 
 
 		switch ( $settings['order_by'] ) {
 			case 'default':
-				$args_1['meta_key']  = 'auszugsdatum';
-				$args_1['orderby']   = 'meta_value';
-				$args_1['order']     = 'ASC';
+				$all_posts_args['meta_key'] = 'auszugsdatum';
+				$all_posts_args['orderby']  = 'meta_value';
+				$all_posts_args['order']    = 'ASC';
 				break;
 
 			case 'price_asc':
-				$args_1['meta_key']  = 'frymo_price_num';
-				$args_1['orderby']   = 'meta_value';
-				$args_1['order']     = 'ASC';
+				$all_posts_args['meta_key'] = 'frymo_price_num';
+				$all_posts_args['orderby']  = 'meta_value';
+				$all_posts_args['order']    = 'ASC';
 				break;
 
 			case 'price_desc':
-				$args_1['meta_key']  = 'frymo_price_num';
-				$args_1['orderby']   = 'meta_value';
-				$args_1['order']     = 'DESC';
+				$all_posts_args['meta_key'] = 'frymo_price_num';
+				$all_posts_args['orderby']  = 'meta_value';
+				$all_posts_args['order']    = 'DESC';
 				break;
 
 			case 'rooms_asc':
-				$args_1['meta_key']  = 'anzahl_zimmer';
-				$args_1['orderby']   = 'meta_value';
-				$args_1['order']     = 'ASC';
+				$all_posts_args['meta_key'] = 'anzahl_zimmer';
+				$all_posts_args['orderby']  = 'meta_value';
+				$all_posts_args['order']    = 'ASC';
 				break;
 
 			case 'rooms_desc':
-				$args_1['meta_key']  = 'anzahl_zimmer';
-				$args_1['orderby']   = 'meta_value';
-				$args_1['order']     = 'DESC';
+				$all_posts_args['meta_key'] = 'anzahl_zimmer';
+				$all_posts_args['orderby']  = 'meta_value';
+				$all_posts_args['order']    = 'DESC';
 				break;
 		}
 
-		$query_1 = new WP_Query( $args_1 );
-		// error_log( "query_1\n" . print_r( $query_1, true ) . "\n" );
+		$all_posts_query = new WP_Query( $all_posts_args );
+		// error_log( "all_posts_query\n" . print_r( $all_posts_query, true ) . "\n" );
 
-		$all_posts = array();
-		foreach ( $query_1->posts as $post_id ) {
-			$all_posts[ $post_id ] = array(
-				'check_in_date' => get_post_meta( $post_id, 'einzugsdatum', true ) ?? '',
+		$all_posts_with_dates = array();
+		foreach ( $all_posts_query->posts as $post_id ) {
+			$all_posts_with_dates[ $post_id ] = array(
+				'check_in_date'  => get_post_meta( $post_id, 'einzugsdatum', true ) ?? '',
 				'check_out_date' => get_post_meta( $post_id, 'auszugsdatum', true ) ?? '',
 			);
 		}
 
-
-		// // Sort $all_posts by check_out_date (einzugsdatum)
-		// uasort(
-		// 	$all_posts,
-		// 	function ( $a, $b ) {
-		// 		// Convert check_in_date to timestamps for comparison
-		// 		$date_a = ! empty( $a['check_out_date'] ) ? strtotime( $a['check_out_date'] ) : PHP_INT_MAX;
-		// 		$date_b = ! empty( $b['check_out_date'] ) ? strtotime( $b['check_out_date'] ) : PHP_INT_MAX;
-
-		// 		// Return comparison result for sorting in ascending order
-		// 		return $date_a <=> $date_b;
-		// 	}
-		// );
+		// Add 3 months if $check_out_date is empty
+		if ( empty( $check_out_date ) ) {
+			$date = new DateTime( $check_in_date );
+			$date->modify('+3 months');
+			$check_out_date = $date->format( 'Y-m-d' );
+		}
 
 
-
-
-		$filter = array_filter( $all_posts, function( $dates ) use ( $check_in_date, $check_out_date ) {
+		$filter = array_filter( $all_posts_with_dates, function( $dates ) use ( $check_in_date, $check_out_date ) {
 			$property_check_in = ! empty( $dates['check_in_date'] ) ? strtotime( $dates['check_in_date'] ) : null;
 			$property_check_out = ! empty( $dates['check_out_date'] ) ? strtotime( $dates['check_out_date'] ) : null;
 	
@@ -427,6 +384,74 @@ class DCF_Elementor {
 	
 			return false; // Exclude everything else
 		} );
+
+
+		// if ( ! empty( $check_out_date ) ) {
+
+		// 	$filter = array_filter( $all_posts_with_dates, function( $dates ) use ( $check_in_date, $check_out_date ) {
+		// 		$property_check_in = ! empty( $dates['check_in_date'] ) ? strtotime( $dates['check_in_date'] ) : null;
+		// 		$property_check_out = ! empty( $dates['check_out_date'] ) ? strtotime( $dates['check_out_date'] ) : null;
+		
+		// 		$requested_check_in = strtotime( $check_in_date );
+		// 		$requested_check_out = strtotime( $check_out_date );
+		
+		// 		// Case 1: Property has no check-in or check-out dates (completely free)
+		// 		if ( is_null( $property_check_in ) && is_null( $property_check_out ) ) {
+		// 			return true;
+		// 		}
+		
+		// 		// Case 2: Property's check-out date is strictly before the requested check-in date
+		// 		if ( ! is_null( $property_check_out ) && $property_check_out < $requested_check_in ) {
+		// 			return true;
+		// 		}
+		
+		// 		// Case 3: Property's check-in date is strictly after the requested check-out date
+		// 		if ( ! is_null( $property_check_in ) && $property_check_in > $requested_check_out ) {
+		// 			return true;
+		// 		}
+		
+		// 		// Case 4: Handle back-to-back bookings
+		// 		// Exclude properties where check-in is the day after requested check-out
+		// 		if ( ! is_null( $property_check_in ) && ! is_null( $property_check_out ) ) {
+		// 			// Check if check-out happens on the requested check-in date (overlap)
+		// 			if ( $property_check_out >= $requested_check_in && $property_check_in <= $requested_check_out ) {
+		// 				return false;
+		// 			}
+		
+		// 			// Back-to-back: Check-out is immediately followed by check-in
+		// 			if ( $property_check_out + DAY_IN_SECONDS == $property_check_in ) {
+		// 				return false;
+		// 			}
+		// 		}
+		
+		// 		return false; // Exclude everything else
+		// 	} );
+		// } else {
+		// 	$filter = array_filter( $all_posts_with_dates, function( $dates ) use ( $check_in_date ) {
+
+		// 		$property_check_in = ! empty( $dates['check_in_date'] ) ? strtotime( $dates['check_in_date'] ) : null;
+		// 		$property_check_out = ! empty( $dates['check_out_date'] ) ? strtotime( $dates['check_out_date'] ) : null;
+
+		// 		$requested_check_in = strtotime( $check_in_date );
+		
+		// 		// Case 1: Property has no check-in or check-out dates (completely free)
+		// 		if ( is_null( $property_check_in ) ) {
+		// 			return true;
+		// 		}
+
+		// 		// Case 2: Property's check-in date is strictly after the requested check-out date
+		// 		if ( ! is_null( $property_check_out ) && $requested_check_in > $property_check_out ) {
+		// 			return true;
+		// 		}
+
+		// 		// Case 2: Property's check-in date is strictly after the requested check-out date
+		// 		if ( is_null( $property_check_in ) && ! is_null( $property_check_out ) && $requested_check_in > $property_check_out ) {
+		// 			return true;
+		// 		}
+		
+		// 		return false; // Exclude everything else
+		// 	} );
+		// }
 
 
 
@@ -570,21 +595,35 @@ class DCF_Elementor {
 				}
 
 				protected function render() {
-					$post_id = get_the_ID();
-					$date = get_post_meta( $post_id, 'auszugsdatum', true );
-					
-					if ( ! empty( $date ) ) {
-						$current_date = new DateTime();
-						$datetime = new DateTime( $date );
+					$post_id                = get_the_ID();
+					$property_checkin_date  = get_post_meta( $post_id, 'einzugsdatum', true );
+					$property_checkout_date = get_post_meta( $post_id, 'auszugsdatum', true );
+					$current_date           = new DateTime();
 
-						if ( $datetime <= $current_date ) {
+					
+					if ( ! empty( $property_checkin_date ) && ! empty( $property_checkout_date ) ) {
+						$property_checkin_datetime  =  new DateTime( $property_checkin_date );
+						$property_checkout_datetime = new DateTime( $property_checkout_date );
+						
+						if ( $property_checkin_datetime > $current_date && $property_checkout_datetime < $current_date ) {
+							echo 'sofort verfügbar';
+						} else if ( $property_checkout_datetime > $current_date ) {
+							echo 'verfügbar ab ' . esc_html( $property_checkout_datetime->format( 'd.m.Y' ) );
+						}
+					} else if ( ! empty( $property_checkin_date ) ) {
+						$property_checkin_datetime = new DateTime( $property_checkin_date );
+						if ( $property_checkin_datetime < $current_date ) {
+							echo '';
+						}
+					} else if ( ! empty( $property_checkout_date ) ) {
+						$property_checkout_datetime = new DateTime( $property_checkout_date );
+						if ( $property_checkout_datetime < $current_date ) {
 							echo 'sofort verfügbar';
 						} else {
-							echo 'verfügbar ab ' . esc_html( $datetime->format( 'd.m.Y' ) );
+							echo 'verfügbar ab ' . esc_html( $property_checkout_datetime->format( 'd.m.Y' ) );
 						}
-					} else {
-						echo 'sofort verfügbar';
 					}
+
 				}
 
 			}

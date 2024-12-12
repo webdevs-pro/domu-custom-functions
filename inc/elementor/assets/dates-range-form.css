@@ -49,6 +49,11 @@
    display: flex;
    justify-content: space-between;
 }
+.domu-flatpikr-wrapper .flatpickr-day:not(.flatpickr-disabled) {
+   font-weight: bold;
+}
+
+
 @media(max-width: 768px) {
    .elementor-widget-dcf-dates-range-form form {
       flex-direction: column;
