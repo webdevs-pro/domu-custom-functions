@@ -595,33 +595,85 @@ class DCF_Elementor {
 				}
 
 				protected function render() {
-					$post_id                = get_the_ID();
-					$property_checkin_date  = get_post_meta( $post_id, 'einzugsdatum', true );
-					$property_checkout_date = get_post_meta( $post_id, 'auszugsdatum', true );
-					$current_date           = new DateTime();
+
+					// Add logic to set $current_datetime based on frymo_query URL parameter
+
+					$post_id                 = get_the_ID();
+					$property_checkin_date   = get_post_meta( $post_id, 'einzugsdatum', true );
+					$property_checkout_date  = get_post_meta( $post_id, 'auszugsdatum', true );
+					$current_datetime        = new DateTimeImmutable();
+					$current_datetime_plus_3 = $current_datetime->modify( '+3 months' );
+					// $current_date_plus_3     = $current_datetime_plus_3->format( 'Y-m-d' );
+
+					// If property has both dates
+					if ( ! empty( $property_checkin_date ) && ! empty( $property_checkout_date ) ) {
+
+						$property_checkin_datetime  = new DateTimeImmutable( $property_checkin_date );
+						$property_checkout_datetime = new DateTimeImmutable( $property_checkout_date );
+
+
+						// If property has checkin date before checkout date (normal mode)
+						if ( $property_checkin_datetime < $property_checkout_datetime ) {
+
+							if ( $property_checkout_datetime > $current_datetime ) {
+								echo ( is_user_logged_in() ? '1.1 ' : '' ) . 'verfügbar ab ' . esc_html( $property_checkout_datetime->format( 'd.m.Y' ) );
+							} else {
+								echo ( is_user_logged_in() ? '1.1 ' : '' ) . 'sofort verfügbar';
+							}
+
+						}
+
+
+						// If the property has a checkin date after the checkout date (reverse mode)
+						else if ( $property_checkin_datetime > $property_checkout_datetime ) {
+
+							// Property is available as the next check in date is later than 3 month
+							if ( $property_checkin_datetime > $current_datetime_plus_3 ) {
+								echo ( is_user_logged_in() ? '1.2 ' : '' ) . 'sofort verfügbar';
+							}
+							
+						}
+
+					} 
+
+
+
+
 
 					
-					if ( ! empty( $property_checkin_date ) && ! empty( $property_checkout_date ) ) {
-						$property_checkin_datetime  =  new DateTime( $property_checkin_date );
-						$property_checkout_datetime = new DateTime( $property_checkout_date );
-						
-						if ( $property_checkin_datetime > $current_date && $property_checkout_datetime < $current_date ) {
-							echo 'sofort verfügbar';
-						} else if ( $property_checkout_datetime > $current_date ) {
-							echo 'verfügbar ab ' . esc_html( $property_checkout_datetime->format( 'd.m.Y' ) );
+					// If property has only checkin date
+					else if ( ! empty( $property_checkin_date ) && empty( $property_checkout_date ) ) {
+						$property_checkin_datetime  = new DateTime( $property_checkin_date );
+
+						// Property is available as the next check in date is later than 3 month
+						if ( $property_checkin_datetime > $current_datetime_plus_3 ) {
+							echo ( is_user_logged_in() ? '2 ' : '' ) . 'sofort verfügbar';
 						}
-					} else if ( ! empty( $property_checkin_date ) ) {
-						$property_checkin_datetime = new DateTime( $property_checkin_date );
-						if ( $property_checkin_datetime < $current_date ) {
-							echo '';
-						}
-					} else if ( ! empty( $property_checkout_date ) ) {
+					}
+
+
+
+
+
+					
+					// if property has only checkout date
+					else if ( empty( $property_checkin_date ) && ! empty( $property_checkout_date ) ) {
 						$property_checkout_datetime = new DateTime( $property_checkout_date );
-						if ( $property_checkout_datetime < $current_date ) {
-							echo 'sofort verfügbar';
+
+						if ( $property_checkout_datetime < $current_datetime ) {
+							echo ( is_user_logged_in() ? '3 ' : '' ) . 'sofort verfügbar';
 						} else {
-							echo 'verfügbar ab ' . esc_html( $property_checkout_datetime->format( 'd.m.Y' ) );
+							echo ( is_user_logged_in() ? '3 ' : '' ) . 'verfügbar ab ' . esc_html( $property_checkout_datetime->format( 'd.m.Y' ) );
 						}
+					}
+
+
+
+
+
+					// No dates at all so property is free
+					else {
+						echo '4 sofort verfügbar';
 					}
 
 				}
