@@ -19,6 +19,7 @@ class DCF_Elementor {
 		add_filter( 'frymo/query/', array( $this, 'add_date_range_to_query_args' ), 10, 3 );
 		add_action( 'elementor/dynamic_tags/register', array( $this, 'register_dynamic_tags' ) );
 		add_filter( 'frymo/isting_widget/sorting_options', array( $this, 'modify_listing_sorting_options' ) );
+		add_action( 'frymo/isting_widget/after_no_results_message', array( $this, 'add_content_after_no_results_message' ) );
 	}
 
 	public function init() {
@@ -690,6 +691,15 @@ class DCF_Elementor {
 		$options['default'] = 'zuerst verfügbar';
 
 		return $options;
+	}
+
+
+
+
+	public function add_content_after_no_results_message( $widget ) {
+		echo '<div class="domu-no-results-button-wrapper">';
+			echo '<a href="#" class="domu-no-results-button">Versuche ein anderes Datum</a>';
+		echo '</div>';
 	}
   
 }

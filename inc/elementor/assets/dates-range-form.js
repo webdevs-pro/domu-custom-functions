@@ -165,6 +165,68 @@ jQuery(window).on('elementor/frontend/init', function () {
 
 		frymoProcessSubmitingSearchFilterForm($scope);
 
+
+		$(document).on('click', 'a.domu-no-results-button', function (e) {
+			e.preventDefault(); // Prevent default link behavior, if any
+
+			// Find the target element and its direct child
+			var target = $('.elementor-widget-dcf-dates-range-form');
+			var childElement = target.find('>.elementor-widget-container'); // Direct child selector
+
+			if (target.length && childElement.length) {
+					// Get the child's offset
+					var childOffsetTop = childElement.offset().top;
+
+					// Get the CSS transform property
+					var transform = childElement.css('transform'); // Example: matrix(1, 0, 0, 1, 0, -50)
+
+					var translateY = 0; // Default translateY is 0 if no transform is applied
+
+					if (transform && transform !== 'none') {
+						// Extract the transform values
+						var matrixValues = transform.match(/matrix.*\((.+)\)/);
+						if (matrixValues && matrixValues[1]) {
+							// Split matrix values into an array and get the 6th value (translateY in pixels)
+							translateY = parseFloat(matrixValues[1].split(',')[5]); 
+						}
+					}
+
+					// If the transform includes percentages (e.g., translateY(-50%)), calculate percentage manually
+					if (transform.includes('%')) {
+						// Get the height of the child element
+						var childHeight = childElement.outerHeight(); // Height of the child element in pixels
+
+						// Match percentage values from the `transform` property
+						var percentageMatch = transform.match(/translateY\(([-\d.]+)%\)/);
+						if (percentageMatch && percentageMatch[1]) {
+							var percentageValue = parseFloat(percentageMatch[1]); // Extract the percentage value
+							translateY = (percentageValue / 100) * childHeight; // Convert percentage to pixels
+						}
+					}
+
+					// Get the padding of the child element
+					var paddingTop = parseInt(childElement.css('padding-top')) || 0; // Default padding-top is 0 if not set
+
+					// Calculate the adjusted scroll position
+					var adjustedPosition = childOffsetTop + translateY - paddingTop + 20; // Add 20px for extra spacing
+
+					// Scroll smoothly to the calculated position
+					$('html, body').animate(
+						{
+							scrollTop: adjustedPosition, // Scroll to the adjusted position
+						},
+						500 // Animation duration: 500ms
+					);
+			} else {
+					if (!target.length) {
+						console.error('Target element not found: .elementor-widget-dcf-dates-range-form');
+					}
+					if (!childElement.length) {
+						console.error('Child element not found: .elementor-widget-container');
+					}
+			}
+		});
+
 	};
 
 	elementorFrontend.hooks.addAction('frontend/element_ready/dcf-dates-range-form.default', DCF_Dates_Range_Form);
