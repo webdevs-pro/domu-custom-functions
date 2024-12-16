@@ -617,9 +617,9 @@ class DCF_Elementor {
 						if ( $property_checkin_datetime < $property_checkout_datetime ) {
 
 							if ( $property_checkout_datetime > $current_datetime ) {
-								echo ( is_user_logged_in() ? '1.1 ' : '' ) . 'verfügbar ab ' . esc_html( $property_checkout_datetime->format( 'd.m.Y' ) );
+								echo 'verfügbar ab ' . esc_html( $property_checkout_datetime->format( 'd.m.Y' ) );
 							} else {
-								echo ( is_user_logged_in() ? '1.1 ' : '' ) . 'sofort verfügbar';
+								echo 'sofort verfügbar';
 							}
 
 						}
@@ -630,7 +630,7 @@ class DCF_Elementor {
 
 							// Property is available as the next check in date is later than 3 month
 							if ( $property_checkin_datetime > $current_datetime_plus_3 ) {
-								echo ( is_user_logged_in() ? '1.2 ' : '' ) . 'sofort verfügbar';
+								echo 'sofort verfügbar';
 							}
 							
 						}
@@ -648,7 +648,7 @@ class DCF_Elementor {
 
 						// Property is available as the next check in date is later than 3 month
 						if ( $property_checkin_datetime > $current_datetime_plus_3 ) {
-							echo ( is_user_logged_in() ? '2 ' : '' ) . 'sofort verfügbar';
+							echo 'sofort verfügbar';
 						}
 					}
 
@@ -662,9 +662,9 @@ class DCF_Elementor {
 						$property_checkout_datetime = new DateTime( $property_checkout_date );
 
 						if ( $property_checkout_datetime < $current_datetime ) {
-							echo ( is_user_logged_in() ? '3 ' : '' ) . 'sofort verfügbar';
+							echo 'sofort verfügbar';
 						} else {
-							echo ( is_user_logged_in() ? '3 ' : '' ) . 'verfügbar ab ' . esc_html( $property_checkout_datetime->format( 'd.m.Y' ) );
+							echo 'verfügbar ab ' . esc_html( $property_checkout_datetime->format( 'd.m.Y' ) );
 						}
 					}
 
@@ -674,7 +674,7 @@ class DCF_Elementor {
 
 					// No dates at all so property is free
 					else {
-						echo '4 sofort verfügbar';
+						echo 'sofort verfügbar';
 					}
 
 				}
