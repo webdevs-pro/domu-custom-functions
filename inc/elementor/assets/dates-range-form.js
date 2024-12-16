@@ -129,6 +129,8 @@ jQuery(window).on('elementor/frontend/init', function () {
 		// Remove all parameters from current query
 		var form = $scope.find('form');
 		var filterInitialSettings = JSON.parse($scope.attr('data-initial-settings'));
+
+		
 		$(form).on('submit', function(e) {
 			e.preventDefault(); // Prevent default submit behavior initially
 

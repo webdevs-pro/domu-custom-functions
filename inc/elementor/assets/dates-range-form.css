@@ -33,7 +33,7 @@
    box-shadow: unset;
 }
 
-.elementor-widget-dcf-dates-range-form form input[type="submit"] {
+.elementor-widget-dcf-dates-range-form form button.frymo-submit {
    font-family: "Trio Grotesk", Sans-serif;
    font-size: 10px;
    font-weight: 500;
@@ -43,6 +43,11 @@
    color: #ffffff;
    padding: 12px 40px;
    border: none;
+}
+
+.elementor-widget-dcf-dates-range-form.frymo-loading .frymo-submit:after {
+   width: 14px;
+   height: 14px;
 }
 
 .domu-flatpikr-wrapper .flatpickr-current-month {
