@@ -19,14 +19,14 @@ function dcf_register_assets() {
 		true // Load in the footer
 	);
 
-	// // Register CSS file
-	// wp_enqueue_style(
-	// 	'domu-custom-css', // Handle for the style
-	// 	DCF_PLUGIN_DIR_URL  . '/inc/shortcodes/assets/domu-custom.css',
-	// 	array(), // Dependencies (empty array means no dependencies)
-	// 	DCF_PLUGIN_VERSION,
-	// 	'all' // Media type: 'all', 'screen', 'print', etc.
-	// );
+	// Register CSS file
+	wp_enqueue_style(
+		'domu-custom-css', // Handle for the style
+		DCF_PLUGIN_DIR_URL  . '/inc/assets/domu-custom.css',
+		array(), // Dependencies (empty array means no dependencies)
+		DCF_PLUGIN_VERSION,
+		'all' // Media type: 'all', 'screen', 'print', etc.
+	);
 }
 
 

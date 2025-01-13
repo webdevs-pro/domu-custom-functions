@@ -1,0 +1,9 @@
+html[lang] .dcf-lang-separator {
+    display: none;
+}
+html[lang="de-DE"] .dcf-lang-en {
+    display: none;
+}
+html[lang="en-US"] .dcf-lang-de {
+    display: none;
+}

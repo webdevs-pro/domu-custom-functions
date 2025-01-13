@@ -20,6 +20,7 @@ class DCF_Elementor {
 		add_action( 'elementor/dynamic_tags/register', array( $this, 'register_dynamic_tags' ) );
 		add_filter( 'frymo/isting_widget/sorting_options', array( $this, 'modify_listing_sorting_options' ) );
 		add_action( 'frymo/isting_widget/after_no_results_message', array( $this, 'add_content_after_no_results_message' ) );
+		add_filter( 'frymo/elementor/widget_content_raw', array( $this, 'wrap_content_translations' ), 10, 2 );
 	}
 
 	public function init() {
@@ -700,6 +701,21 @@ class DCF_Elementor {
 		echo '<div class="domu-no-results-button-wrapper">';
 			echo '<a href="#" class="domu-no-results-button">Versuche ein anderes Datum</a>';
 		echo '</div>';
+	}
+
+
+
+	public function wrap_content_translations( $widget_content, $widget ) {
+
+		if ( in_array( $widget->get_name(), [ 'frymo-description', 'frymo-location-description' ] ) ) {
+			// Define the regex pattern to find the _EN, __EN, ___EN, ____EN or ____EN separator
+			$pattern = '/(.*?)(_{1,6}EN)(.*)/s';
+
+			// Replace the matched groups with the desired div elements
+			$widget_content = preg_replace( $pattern, '<div class="dcf-lang-de">$1</div><div class="dcf-lang-separator">$2</div><div class="dcf-lang-en">$3</div>', $widget_content );
+		}
+	
+		return $widget_content;
 	}
   
 }
