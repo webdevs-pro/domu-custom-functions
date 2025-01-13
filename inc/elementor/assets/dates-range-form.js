@@ -168,6 +168,21 @@ jQuery(window).on('elementor/frontend/init', function () {
 		frymoProcessSubmitingSearchFilterForm($scope);
 
 
+		$(document).on('click', '.dcf-date-input-clear-icon', function (e) {
+			e.preventDefault();
+
+			// Clear the move-in date field
+			moveInDateField[0]._flatpickr.clear();
+
+			// Maybe clear query
+			var frymo_query_raw = location.search.split('frymo_query=')[1];
+			if (typeof frymo_query_raw !== 'undefined') {
+				form.submit();
+			}
+
+		});
+		
+
 		$(document).on('click', 'a.domu-no-results-button', function (e) {
 			e.preventDefault(); // Prevent default link behavior, if any
 
