@@ -617,9 +617,9 @@ class DCF_Elementor {
 						if ( $property_checkin_datetime < $property_checkout_datetime ) {
 
 							if ( $property_checkout_datetime > $current_datetime ) {
-								echo 'verfügbar ab ' . esc_html( $property_checkout_datetime->format( 'd.m.Y' ) );
+								echo esc_html__( 'verfügbar ab', 'domu-custom-functions' ) . ' ' . esc_html( $property_checkout_datetime->format( 'd.m.Y' ) );
 							} else {
-								echo 'sofort verfügbar';
+								echo esc_html__( 'sofort verfügbar', 'domu-custom-functions' );
 							}
 
 						}
@@ -630,7 +630,7 @@ class DCF_Elementor {
 
 							// Property is available as the next check in date is later than 3 month
 							if ( $property_checkin_datetime > $current_datetime_plus_3 ) {
-								echo 'sofort verfügbar';
+								echo esc_html__( 'sofort verfügbar', 'domu-custom-functions' );
 							}
 							
 						}
@@ -648,7 +648,7 @@ class DCF_Elementor {
 
 						// Property is available as the next check in date is later than 3 month
 						if ( $property_checkin_datetime > $current_datetime_plus_3 ) {
-							echo 'sofort verfügbar';
+							echo esc_html__( 'sofort verfügbar', 'domu-custom-functions' );
 						}
 					}
 
@@ -662,9 +662,9 @@ class DCF_Elementor {
 						$property_checkout_datetime = new DateTime( $property_checkout_date );
 
 						if ( $property_checkout_datetime < $current_datetime ) {
-							echo 'sofort verfügbar';
+							echo esc_html__( 'sofort verfügbar', 'domu-custom-functions' );
 						} else {
-							echo 'verfügbar ab ' . esc_html( $property_checkout_datetime->format( 'd.m.Y' ) );
+							echo esc_html__( 'verfügbar ab', 'domu-custom-functions' ) . ' ' . esc_html( $property_checkout_datetime->format( 'd.m.Y' ) );
 						}
 					}
 
@@ -674,7 +674,7 @@ class DCF_Elementor {
 
 					// No dates at all so property is free
 					else {
-						echo 'sofort verfügbar';
+						echo esc_html__( 'sofort verfügbar', 'domu-custom-functions' );
 					}
 
 				}
@@ -688,7 +688,7 @@ class DCF_Elementor {
 
 
 	public function modify_listing_sorting_options( $options ) {
-		$options['default'] = 'zuerst verfügbar';
+		$options['default'] = esc_html__( 'zuerst verfügbar', 'domu-custom-functions' );
 
 		return $options;
 	}

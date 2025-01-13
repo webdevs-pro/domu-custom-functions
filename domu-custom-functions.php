@@ -2,10 +2,11 @@
 /**
  * Plugin Name: Domu Custom Functions
  * Plugin URI: https://frymo.de
- * Version: 1.14.0
+ * Version: 1.15.0
  * Description: Custom functions for Domu.
  * Author: Stark Systems UG
  * Author URI: https://stark-systems.de
+ * Text Domain: domu-custom-functions
  */
 
 
@@ -14,6 +15,8 @@ use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 final class DCF_Plugin {
 
 	public function __construct() {
+		add_action( 'init', array( $this, 'load_textdomain' ) );
+
 		// Check if the main plugin exists and is active
 		if ( ! $this->is_main_plugin_active() ) {
 			add_action( 'admin_notices', [ $this, 'admin_notice_main_plugin_missing' ] );
@@ -25,6 +28,11 @@ final class DCF_Plugin {
 		$this->include_files();
 		$this->init_plugin_update_checker();
 	}
+
+	function load_textdomain() {
+		load_plugin_textdomain( 'domu-custom-functions', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+	}
+
 
 	private function is_main_plugin_active() {
 		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
