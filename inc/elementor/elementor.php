@@ -708,11 +708,18 @@ class DCF_Elementor {
 	public function wrap_content_translations( $widget_content, $widget ) {
 
 		if ( in_array( $widget->get_name(), [ 'frymo-description', 'frymo-location-description' ] ) ) {
+			// Get current language
+			$locale = get_locale();
+
 			// Define the regex pattern to find the _EN, __EN, ___EN, ____EN or ____EN separator
 			$pattern = '/(.*?)(_{1,6}EN)(.*)/s';
 
-			// Replace the matched groups with the desired div elements
-			$widget_content = preg_replace( $pattern, '<div class="dcf-lang-de">$1</div><div class="dcf-lang-separator">$2</div><div class="dcf-lang-en">$3</div>', $widget_content );
+			// Get translated text
+			if ( $locale === 'de_DE' ) {
+				$widget_content = preg_replace( $pattern, '$1', $widget_content );
+			} else if ( $locale === 'en_US' ) {
+				$widget_content = preg_replace( $pattern, '$3', $widget_content );
+			}
 		}
 	
 		return $widget_content;
