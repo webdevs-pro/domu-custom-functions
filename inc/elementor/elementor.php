@@ -251,12 +251,24 @@ class DCF_Elementor {
 
 			$available = true;
 
+			// If property has both dates
 			if ( ! empty( $property_checkin_date ) && ! empty( $property_checkout_date ) ) {
 
 				$property_checkin_datetime  = new DateTimeImmutable( $property_checkin_date );
 				$property_checkout_datetime = new DateTimeImmutable( $property_checkout_date );
 
 				if ( $property_checkin_datetime > $property_checkout_datetime && $property_checkin_datetime < $current_datetime_plus_3) {
+					$available = false;
+				}
+
+			}
+
+			// If property has only checkin date
+			else if ( ! empty( $property_checkin_date ) && empty( $property_checkout_date ) ) {
+
+				$property_checkin_datetime  = new DateTime( $property_checkin_date );
+
+				if ( $property_checkin_datetime < $current_datetime_plus_3 ) {
 					$available = false;
 				}
 
@@ -512,7 +524,8 @@ class DCF_Elementor {
 
 							if ( $property_checkout_datetime > $current_datetime ) {
 								echo esc_html__( 'verfügbar ab', 'domu-custom-functions' ) . ' ' . esc_html( $property_checkout_datetime->format( 'd.m.Y' ) );
-							} else {
+							} 
+							else {
 								echo esc_html__( 'sofort verfügbar', 'domu-custom-functions' );
 							}
 
@@ -525,7 +538,8 @@ class DCF_Elementor {
 							// Property is available as the next check in date is later than 3 month
 							if ( $property_checkin_datetime > $current_datetime_plus_3 ) {
 								echo esc_html__( 'sofort verfügbar', 'domu-custom-functions' );
-							} else {
+							} 
+							else {
 								echo esc_html__( 'akutell nicht verfügbar', 'domu-custom-functions' );
 							}
 							
@@ -545,6 +559,9 @@ class DCF_Elementor {
 						// Property is available as the next check in date is later than 3 month
 						if ( $property_checkin_datetime > $current_datetime_plus_3 ) {
 							echo esc_html__( 'sofort verfügbar', 'domu-custom-functions' );
+						} 
+						else {
+							echo esc_html__( 'akutell nicht verfügbar', 'domu-custom-functions' );
 						}
 					}
 
@@ -559,7 +576,8 @@ class DCF_Elementor {
 
 						if ( $property_checkout_datetime < $current_datetime ) {
 							echo esc_html__( 'sofort verfügbar', 'domu-custom-functions' );
-						} else {
+						} 
+						else {
 							echo esc_html__( 'verfügbar ab', 'domu-custom-functions' ) . ' ' . esc_html( $property_checkout_datetime->format( 'd.m.Y' ) );
 						}
 					}
