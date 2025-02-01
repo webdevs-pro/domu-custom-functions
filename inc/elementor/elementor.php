@@ -243,7 +243,7 @@ class DCF_Elementor {
 
 		$all_posts_with_dates = array();
 		foreach ( $all_posts_query->posts as $post_id ) {
-			$property_checkin_date = get_post_meta( $post_id, 'einzugsdatum', true ) ?? '';
+			$property_checkin_date  = get_post_meta( $post_id, 'einzugsdatum', true ) ?? '';
 			$property_checkout_date = get_post_meta( $post_id, 'auszugsdatum', true ) ?? '';
 
 			$current_datetime        = new DateTimeImmutable();
