@@ -632,6 +632,8 @@ class DCF_Elementor {
 							// Property is available as the next check in date is later than 3 month
 							if ( $property_checkin_datetime > $current_datetime_plus_3 ) {
 								echo esc_html__( 'sofort verfügbar', 'domu-custom-functions' );
+							} else {
+								echo esc_html__( 'akutell nicht verfügbar', 'domu-custom-functions' );
 							}
 							
 						}
