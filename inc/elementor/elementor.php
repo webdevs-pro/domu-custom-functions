@@ -47,11 +47,11 @@ class DCF_Elementor {
 
 	/**
 	 * Register custom widgets categories
-	*
-	* @param \Elementor\Elements_Manager $elements_manager
-	*
-	* @return void
-	*/
+	 *
+	 * @param \Elementor\Elements_Manager $elements_manager
+	 *
+	 * @return void
+	 */
 	function register_widgets_categories( \Elementor\Elements_Manager $elements_manager ) {
 		$elements_manager->add_category( 'domu', [
 			'title' => 'Domu',
@@ -63,11 +63,11 @@ class DCF_Elementor {
 
 	/**
 	 * Admin notice
-	*
-	* Warning when the site doesn't have Elementor installed or activated.
-	*
-	* @return void
-	*/
+	 *
+	 * Warning when the site doesn't have Elementor installed or activated.
+	 *
+	 * @return void
+	 */
 	public function admin_notice_missing_main_plugin() {
 		if ( isset( $_GET['activate'] ) ) {
 			unset( $_GET['activate'] );
@@ -84,11 +84,11 @@ class DCF_Elementor {
 
 	/**
 	 * Admin notice
-	*
-	* Warning when the site doesn't have a minimum required Elementor version.
-	*
-	* @return void
-	*/
+	 *
+	 * Warning when the site doesn't have a minimum required Elementor version.
+	 *
+	 * @return void
+	 */
 	public function admin_notice_minimum_elementor_version() {
 		if ( isset( $_GET['activate'] ) ) {
 			unset( $_GET['activate'] );
@@ -107,11 +107,11 @@ class DCF_Elementor {
 
 	/**
 	 * Admin notice
-	*
-	* Warning when the site doesn't have a minimum required PHP version.
-	*
-	* @return void
-	*/
+	 *
+	 * Warning when the site doesn't have a minimum required PHP version.
+	 *
+	 * @return void
+	 */
 	public function admin_notice_minimum_php_version() {
 		if ( isset( $_GET['activate'] ) ) {
 			unset( $_GET['activate'] );
@@ -130,9 +130,9 @@ class DCF_Elementor {
 
 	/**
 	 * Register DT widgets
-	*
-	* @return void
-	*/
+	 *
+	 * @return void
+	 */
 	public function on_widgets_registered() {
 		require ( DCF_PLUGIN_DIR . '/inc/elementor/widgets/dates-range-form.php' );
 		\Elementor\Plugin::instance()->widgets_manager->register( new DCF_Dates_Range_Form() );
@@ -151,9 +151,9 @@ class DCF_Elementor {
 
 	/**
 	 * Register frontend scripts
-	*
-	* @return void
-	*/
+	 *
+	 * @return void
+	 */
 	public function register_frontend_scripts() {
 		wp_register_script( 'dcf-dates-range-form', DCF_PLUGIN_DIR_URL . 'inc/elementor/assets/dates-range-form.js', array( 'jquery' ), DCF_PLUGIN_VERSION, true );
 		wp_register_script( 'dcf-gallery-slider-control', DCF_PLUGIN_DIR_URL . 'inc/elementor/assets/gallery-slider-control.js', array( 'jquery' ), DCF_PLUGIN_VERSION, true );
@@ -163,86 +163,15 @@ class DCF_Elementor {
 
 	/**
 	 * Register frontend styles
-	*
-	* @return void
-	*/
+	 *
+	 * @return void
+	 */
 	public function register_frontend_styles() {
 		wp_register_style( 'dcf-dates-range-form', DCF_PLUGIN_DIR_URL . 'inc/elementor/assets/dates-range-form.css', array(), DCF_PLUGIN_VERSION );  
 		wp_register_style( 'dcf-calculated-price', DCF_PLUGIN_DIR_URL . 'inc/elementor/assets/calculated-price.css', array(), DCF_PLUGIN_VERSION );  
 		wp_register_style( 'dcf-gallery-slider-control', DCF_PLUGIN_DIR_URL . 'inc/elementor/assets/gallery-slider-control.css', array(), DCF_PLUGIN_VERSION );  
 		wp_register_style( 'dcf-services-grid', DCF_PLUGIN_DIR_URL . 'inc/elementor/assets/services-grid.css', array(), DCF_PLUGIN_VERSION );  
 	}
-
-
-
-
-
-	// public function add_date_range_to_query_args( $args, $frymo_query, $settings ) {
-	// 	if ( is_array( $frymo_query ) && ! empty( $frymo_query ) && isset( $settings['query_id'] ) && isset( $frymo_query[ $settings['query_id'] ] ) ) {
-	// 		// Page load
-	// 		$check_in_date  = $frymo_query[ $settings['query_id'] ]->udfm_einzugsdatum ?? '';
-	// 		$check_out_date = $frymo_query[ $settings['query_id'] ]->udfm_auszugsdatum ?? '';
-
-	// 	} else if ( isset( $_POST['action'] ) && $_POST['action'] == 'frymo_render_listing_widget' ) {
-	// 		// AJAX call
-	// 		$check_in_date  = $_POST['settings']['udfm_einzugsdatum'] ?? '';
-	// 		$check_out_date = $_POST['settings']['udfm_auszugsdatum'] ?? '';
-	// 	}
-
-	// 	// Ensure the check-in date is provided
-	// 	if ( ! isset( $check_in_date ) || ! $check_in_date  ) {
-	// 		return $args; // No check-in date, return original args
-	// 	}
-
-	// 	// Plus 3 months by default
-	// 	if ( ! isset( $check_out_date ) || ! $check_out_date  ) {
-	// 		try {
-	// 			$check_in_datetime = new DateTime( $check_in_date );
-	// 			$check_in_datetime->modify('+2 months'); // Add 3 months
-	// 			$check_in_datetime->modify('last day of this month'); // Set to last day of the month
-	// 			$check_out_date = $check_in_datetime->format('Y-m-d'); // Format as needed
-	// 		} catch (Exception $e) {
-	// 			// Handle invalid date format if needed
-	// 			return $args;
-	// 		}
-	// 	}
-
-
-
-	// 	error_log( "check_in_date\n" . print_r( $check_in_date, true ) . "\n" );
-	// 	error_log( "check_out_date\n" . print_r( $check_out_date, true ) . "\n" );
-
-	// 	// Initialize meta query if not already set
-	// 	$args['meta_query'] = $args['meta_query'] ?? [];
-
-	// 	// Remove any existing date conditions
-	// 	unset( $args['meta_query']['udfm_einzugsdatum'], $args['meta_query']['check_out_date'] );
-
-
-	// 	if ( $check_in_date && $check_out_date ) {
-	// 		$args['meta_query'][] = [
-	// 			'relation' => 'AND',
-	// 			[
-	// 					'key' => 'einzugsdatum', // Date property will be occupied
-	// 					'value' => $check_in_date,
-	// 					'compare' => '>',
-	// 					'type' => 'DATE'
-	// 			],
-	// 			[
-	// 					'key' => 'auszugsdatum', // Date property will be free
-	// 					'value' => $check_out_date,
-	// 					'compare' => '<=',
-	// 					'type' => 'DATE'
-	// 			]
-	// 		];
-	// 	}
-
-	// 	// Uncomment for debugging
-	// 	// error_log( "args\n" . print_r( $args, true ) . "\n" );
-
-	// 	return $args;
-	// }
-
 
 
 
@@ -263,19 +192,6 @@ class DCF_Elementor {
 			$check_out_date = $_POST['settings']['udfm_auszugsdatum'] ?? '';
 		}
 
-		// Ensure the check-in date is provided
-		// if ( empty( $check_in_date ) || empty( $check_out_date ) ) {
-		if ( empty( $check_in_date ) ) {
-
-			if ( $settings['order_by'] === 'default' ) {
-				$args['meta_key']  = 'auszugsdatum';
-				$args['orderby']   = 'meta_value';
-				$args['order']     = 'ASC';
-			}
-
-			return $args;
-		}
-
 
 		// Initialize meta query if not already set
 		$args['meta_query'] = $args['meta_query'] ?? [];
@@ -290,12 +206,6 @@ class DCF_Elementor {
 			'post_status'    => 'publish',
 			'fields'         => 'ids',
 		);
-
-		// if ( $settings['order_by'] === 'default' ) {
-		// 	$all_posts_args['meta_key']  = 'auszugsdatum';
-		// 	$all_posts_args['orderby']   = 'meta_value';
-		// 	$all_posts_args['order']     = 'ASC';
-		// } 
 
 		switch ( $settings['order_by'] ) {
 			case 'default':
@@ -330,15 +240,59 @@ class DCF_Elementor {
 		}
 
 		$all_posts_query = new WP_Query( $all_posts_args );
-		// error_log( "all_posts_query\n" . print_r( $all_posts_query, true ) . "\n" );
 
 		$all_posts_with_dates = array();
 		foreach ( $all_posts_query->posts as $post_id ) {
+			$property_checkin_date = get_post_meta( $post_id, 'einzugsdatum', true ) ?? '';
+			$property_checkout_date = get_post_meta( $post_id, 'auszugsdatum', true ) ?? '';
+
+			$current_datetime        = new DateTimeImmutable();
+			$current_datetime_plus_3 = $current_datetime->modify( '+3 months' );
+
+			$available = true;
+
+			if ( ! empty( $property_checkin_date ) && ! empty( $property_checkout_date ) ) {
+
+				$property_checkin_datetime  = new DateTimeImmutable( $property_checkin_date );
+				$property_checkout_datetime = new DateTimeImmutable( $property_checkout_date );
+
+				if ( $property_checkin_datetime > $property_checkout_datetime && $property_checkin_datetime < $current_datetime_plus_3) {
+					$available = false;
+				}
+
+			}
+
 			$all_posts_with_dates[ $post_id ] = array(
-				'check_in_date'  => get_post_meta( $post_id, 'einzugsdatum', true ) ?? '',
-				'check_out_date' => get_post_meta( $post_id, 'auszugsdatum', true ) ?? '',
+				'check_in_date'  => $property_checkin_date,
+				'check_out_date' => $property_checkout_date,
+				'available'      => $available,
 			);
 		}
+
+
+		// Sort post ids by 'available', not available properties at the end
+		if ( $settings['order_by'] === 'default' ) {
+			uasort(
+				$all_posts_with_dates,
+				function ( $a, $b ) {
+					return (int) $b['available'] - (int) $a['available']; // Sort false (0) to the end
+				}
+			);
+		}
+
+
+		// If check in date is not provided
+		if ( empty( $check_in_date ) ) {
+			// Add 'post__in' to $args
+			$args['post__in'] = array_keys( $all_posts_with_dates );
+			$args['orderby']  = 'post__in';
+
+			// Uncomment for debugging
+			// error_log( "args 1\n" . print_r( $args, true ) . "\n" );
+
+			return $args;
+		}
+
 
 		// Add 3 months if $check_out_date is empty
 		if ( empty( $check_out_date ) ) {
@@ -348,9 +302,14 @@ class DCF_Elementor {
 		}
 
 
-		$filter = array_filter( $all_posts_with_dates, function( $dates ) use ( $check_in_date, $check_out_date ) {
-			$property_check_in = ! empty( $dates['check_in_date'] ) ? strtotime( $dates['check_in_date'] ) : null;
-			$property_check_out = ! empty( $dates['check_out_date'] ) ? strtotime( $dates['check_out_date'] ) : null;
+		$filter = array_filter( $all_posts_with_dates, function( $property ) use ( $check_in_date, $check_out_date ) {
+
+			if ( ! $property['available'] ) {
+				return false;
+			}
+
+			$property_check_in = ! empty( $property['check_in_date'] ) ? strtotime( $property['check_in_date'] ) : null;
+			$property_check_out = ! empty( $property['check_out_date'] ) ? strtotime( $property['check_out_date'] ) : null;
 	
 			$requested_check_in = strtotime( $check_in_date );
 			$requested_check_out = strtotime( $check_out_date );
@@ -388,76 +347,6 @@ class DCF_Elementor {
 		} );
 
 
-		// if ( ! empty( $check_out_date ) ) {
-
-		// 	$filter = array_filter( $all_posts_with_dates, function( $dates ) use ( $check_in_date, $check_out_date ) {
-		// 		$property_check_in = ! empty( $dates['check_in_date'] ) ? strtotime( $dates['check_in_date'] ) : null;
-		// 		$property_check_out = ! empty( $dates['check_out_date'] ) ? strtotime( $dates['check_out_date'] ) : null;
-		
-		// 		$requested_check_in = strtotime( $check_in_date );
-		// 		$requested_check_out = strtotime( $check_out_date );
-		
-		// 		// Case 1: Property has no check-in or check-out dates (completely free)
-		// 		if ( is_null( $property_check_in ) && is_null( $property_check_out ) ) {
-		// 			return true;
-		// 		}
-		
-		// 		// Case 2: Property's check-out date is strictly before the requested check-in date
-		// 		if ( ! is_null( $property_check_out ) && $property_check_out < $requested_check_in ) {
-		// 			return true;
-		// 		}
-		
-		// 		// Case 3: Property's check-in date is strictly after the requested check-out date
-		// 		if ( ! is_null( $property_check_in ) && $property_check_in > $requested_check_out ) {
-		// 			return true;
-		// 		}
-		
-		// 		// Case 4: Handle back-to-back bookings
-		// 		// Exclude properties where check-in is the day after requested check-out
-		// 		if ( ! is_null( $property_check_in ) && ! is_null( $property_check_out ) ) {
-		// 			// Check if check-out happens on the requested check-in date (overlap)
-		// 			if ( $property_check_out >= $requested_check_in && $property_check_in <= $requested_check_out ) {
-		// 				return false;
-		// 			}
-		
-		// 			// Back-to-back: Check-out is immediately followed by check-in
-		// 			if ( $property_check_out + DAY_IN_SECONDS == $property_check_in ) {
-		// 				return false;
-		// 			}
-		// 		}
-		
-		// 		return false; // Exclude everything else
-		// 	} );
-		// } else {
-		// 	$filter = array_filter( $all_posts_with_dates, function( $dates ) use ( $check_in_date ) {
-
-		// 		$property_check_in = ! empty( $dates['check_in_date'] ) ? strtotime( $dates['check_in_date'] ) : null;
-		// 		$property_check_out = ! empty( $dates['check_out_date'] ) ? strtotime( $dates['check_out_date'] ) : null;
-
-		// 		$requested_check_in = strtotime( $check_in_date );
-		
-		// 		// Case 1: Property has no check-in or check-out dates (completely free)
-		// 		if ( is_null( $property_check_in ) ) {
-		// 			return true;
-		// 		}
-
-		// 		// Case 2: Property's check-in date is strictly after the requested check-out date
-		// 		if ( ! is_null( $property_check_out ) && $requested_check_in > $property_check_out ) {
-		// 			return true;
-		// 		}
-
-		// 		// Case 2: Property's check-in date is strictly after the requested check-out date
-		// 		if ( is_null( $property_check_in ) && ! is_null( $property_check_out ) && $requested_check_in > $property_check_out ) {
-		// 			return true;
-		// 		}
-		
-		// 		return false; // Exclude everything else
-		// 	} );
-		// }
-
-
-
-
 		// Extract the IDs of the filtered posts
 		$filtered_post_ids = array_keys( $filter );
 
@@ -465,8 +354,12 @@ class DCF_Elementor {
 		$args['post__in'] = $filtered_post_ids;
 		$args['orderby']  = 'post__in';
 
+		if ( empty( $args['post__in'] ) ) {
+			$args['post__in'] = array( 0 ); // Forces WP_Query to return no results
+		}
+
 		// Uncomment for debugging
-		error_log( "args\n" . print_r( $args, true ) . "\n" );
+		// error_log( "args 2\n" . print_r( $args, true ) . "\n" );
 
 		return $args;
 	}
