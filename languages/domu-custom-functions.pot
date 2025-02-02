@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Domu Custom Functions\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-13 17:18+0000\n"
+"POT-Creation-Date: 2025-02-02 12:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -15,6 +15,10 @@ msgstr ""
 "X-Generator: Loco https://localise.biz/\n"
 "X-Loco-Version: 2.6.14; wp-6.7.1\n"
 "X-Domain: domu-custom-functions"
+
+#: inc/elementor/elementor.php:543 inc/elementor/elementor.php:564
+msgid "akutell nicht verfügbar"
+msgstr ""
 
 #. Description of the plugin
 msgid "Custom functions for Domu."
@@ -32,9 +36,9 @@ msgstr ""
 msgid "https://stark-systems.de"
 msgstr ""
 
-#: inc/elementor/elementor.php:622 inc/elementor/elementor.php:633
-#: inc/elementor/elementor.php:651 inc/elementor/elementor.php:665
-#: inc/elementor/elementor.php:677
+#: inc/elementor/elementor.php:529 inc/elementor/elementor.php:540
+#: inc/elementor/elementor.php:561 inc/elementor/elementor.php:578
+#: inc/elementor/elementor.php:591
 msgid "sofort verfügbar"
 msgstr ""
 
@@ -42,10 +46,10 @@ msgstr ""
 msgid "Stark Systems UG"
 msgstr ""
 
-#: inc/elementor/elementor.php:620 inc/elementor/elementor.php:667
+#: inc/elementor/elementor.php:526 inc/elementor/elementor.php:581
 msgid "verfügbar ab"
 msgstr ""
 
-#: inc/elementor/elementor.php:691
+#: inc/elementor/elementor.php:605
 msgid "zuerst verfügbar"
 msgstr ""
