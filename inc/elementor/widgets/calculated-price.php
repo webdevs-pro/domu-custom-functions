@@ -51,17 +51,19 @@ class DCF_Calculated_Price extends Elementor\Widget_Base {
 	protected function render() {
 		$this->settings = $this->get_settings();
 
+		// error_log( "this->settings\n" . print_r( $this->settings, true ) . "\n" );
+
 		$frymo_query   = $_GET['frymo_query'] ?? '';
 		$frymo_query   = (array) json_decode( stripslashes( $frymo_query ) );
 
 		if ( ( is_array( $frymo_query ) || is_object( $frymo_query ) )
 			&& ! empty( $frymo_query )
-			&& array_key_exists( $this->settings['query_id'], $frymo_query )
-			&& isset( $frymo_query[ $this->settings['query_id'] ] )
+			&& array_key_exists( ( $this->settings['query_id'] ?? '' ), $frymo_query )
+			&& isset( $frymo_query[ ( $this->settings['query_id'] ?? '' ) ] )
 		) {
 			// Page load.
-			$check_in_date  = $frymo_query[ $this->settings['query_id'] ]->udfm_einzugsdatum ?? '';
-			$check_out_date = $frymo_query[ $this->settings['query_id'] ]->udfm_auszugsdatum ?? '';
+			$check_in_date  = $frymo_query[ ( $this->settings['query_id'] ?? '' ) ]->udfm_einzugsdatum ?? '';
+			$check_out_date = $frymo_query[ ( $this->settings['query_id'] ?? '' ) ]->udfm_auszugsdatum ?? '';
 
 		} elseif ( isset( $_POST['action'] ) && 'frymo_render_listing_widget' === $_POST['action'] ) {
 			// AJAX call.
