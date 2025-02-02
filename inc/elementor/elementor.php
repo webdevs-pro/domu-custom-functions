@@ -176,6 +176,8 @@ class DCF_Elementor {
 
 
 	public function add_date_range_to_query_args( $args, $frymo_query, $settings ) {
+
+		// error_log( "args\n" . print_r( $args, true ) . "\n" );
 		
 		if ( ( is_array( $frymo_query ) || is_object( $frymo_query ) )
 			&& ! empty( $frymo_query )
@@ -291,7 +293,6 @@ class DCF_Elementor {
 				}
 			);
 		}
-
 
 		// If check in date is not provided
 		if ( empty( $check_in_date ) ) {
