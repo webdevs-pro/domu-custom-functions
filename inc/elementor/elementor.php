@@ -524,7 +524,7 @@ class DCF_Elementor {
 						if ( $property_checkin_datetime < $property_checkout_datetime ) {
 
 							if ( $property_checkout_datetime > $current_datetime ) {
-								echo esc_html__( 'verfügbar ab', 'domu-custom-functions' ) . ' ' . esc_html( $property_checkout_datetime->format( 'd.m.Y' ) );
+								echo esc_html__( 'verfügbar ab', 'domu-custom-functions' ) . ' ' . esc_html( $property_checkout_datetime->modify('+1 day')->format( 'd.m.Y' ) );
 							} 
 							else {
 								echo esc_html__( 'sofort verfügbar', 'domu-custom-functions' );
@@ -579,7 +579,7 @@ class DCF_Elementor {
 							echo esc_html__( 'sofort verfügbar', 'domu-custom-functions' );
 						} 
 						else {
-							echo esc_html__( 'verfügbar ab', 'domu-custom-functions' ) . ' ' . esc_html( $property_checkout_datetime->format( 'd.m.Y' ) );
+							echo esc_html__( 'verfügbar ab', 'domu-custom-functions' ) . ' ' . esc_html( $property_checkout_datetime->modify('+1 day')->format( 'd.m.Y' ) );
 						}
 					}
 
